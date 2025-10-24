@@ -1,0 +1,31 @@
+# Python
+venv/
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Virtual Environment
+env/
+ENV/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Project specific
+frames/*
+!frames/.gitkeep
+output/*
+!output/.gitkeep
+jumbled_video.mp4
+
+# Jupyter Notebook
+.ipynb_checkpoints

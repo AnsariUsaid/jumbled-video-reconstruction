@@ -10,12 +10,14 @@ JumbledFramesProject/
  │   ├── extract_frames.py             # Phase 2: Extract frames from video
  │   ├── extract_features.py           # Phase 3: Extract ORB features
  │   ├── build_similarity_matrix.py    # Phase 4: Build similarity matrix
- │   └── order_frames.py               # Phase 5A: Determine optimal order
+ │   ├── order_frames.py               # Phase 5A: Determine optimal order
+ │   └── reconstruct_video.py          # Phase 5B: Rebuild video
  ├── frames/                           # extracted frames (300 .jpg files)
- ├── output/                           # reconstructed video will be saved here
+ ├── output/                           # reconstructed video output
+ │   └── reconstructed_video.mp4       # final reconstructed video (62MB)
  ├── frames_features.pkl               # saved ORB features (4.6MB)
  ├── similarity_matrix.npy             # frame similarity matrix (352KB)
- ├── frame_order.pkl                   # optimal frame ordering
+ ├── frame_order.pkl                   # optimal frame ordering (6KB)
  ├── README.md                         # documentation
  ├── requirements.txt                  # dependency list
  ├── jumbled_video.mp4                 # provided jumbled video
@@ -96,9 +98,20 @@ python src/order_frames.py
 - **Step 3**: Apply 2-opt local optimization to improve path quality
 - **Result**: Near-optimal frame sequence with high consecutive similarities
 
-### Phase 5B: Video Reconstruction (Coming Next)
-- Reconstruct video using the determined frame order
-- Save to `output/reconstructed_video.mp4`
+### Phase 5B: Video Reconstruction ✅
+```bash
+python src/reconstruct_video.py
+```
+- Loads optimal frame order from `frame_order.pkl`
+- Reads frames in the determined sequence
+- Writes frames to video file using cv2.VideoWriter
+- Outputs reconstructed video to `output/reconstructed_video.mp4`
+
+**Results:**
+- Successfully reconstructed 300 frames into coherent video
+- Output: 62MB MP4 file at 30 FPS
+- Duration: 10 seconds
+- Resolution: 1920x1080 (Full HD)
 - Reconstruct video in correct order
 - Save to `output/reconstructed_video.mp4`
 
@@ -112,4 +125,8 @@ This project uses ORB (Oriented FAST and Rotated BRIEF) features for frame simil
 - ✅ Phase 3: ORB features extracted and saved (4.6MB features file)
 - ✅ Phase 4: Similarity matrix built (300x300, 352KB)
 - ✅ Phase 5A: Optimal frame order determined (avg similarity: 445/500)
-- ⏳ Phase 5B: Video reconstruction (final step)
+- ✅ Phase 5B: Video successfully reconstructed (62MB, 10 seconds, 1920x1080)
+
+## 🎉 Project Complete!
+
+The jumbled video has been successfully reconstructed using computer vision and graph-based optimization techniques.

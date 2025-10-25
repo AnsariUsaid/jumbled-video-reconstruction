@@ -6,6 +6,9 @@ from tqdm import tqdm
 import warnings
 warnings.filterwarnings('ignore')
 
+import ssl
+ssl._create_default_https_context = ssl._create_unverified_context
+
 import tensorflow as tf
 from tensorflow.keras.applications import ResNet50
 from tensorflow.keras.applications.resnet50 import preprocess_input

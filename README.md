@@ -2,6 +2,33 @@
 
 A Python project to reconstruct jumbled video frames using **computer vision (ORB features)** and **graph-based optimization**. Successfully reorders 300 shuffled frames with 89% average frame similarity.
 
+## 🎬 Demo
+
+### Before (Jumbled) vs After (Reconstructed)
+
+| Jumbled Video | Reconstructed Video |
+|---------------|---------------------|
+| 300 randomly shuffled frames | Correctly ordered sequence |
+| No temporal coherence | Smooth, coherent playback |
+| [jumbled_video.mp4](jumbled_video.mp4) | [reconstructed_video.mp4](output/reconstructed_video.mp4) |
+
+**Video Specifications:**
+- Resolution: 1920×1080 (Full HD)
+- Frame Rate: 30 FPS  
+- Duration: 10 seconds
+- Total Frames: 300
+
+> **Note:** Clone the repository and play the videos locally, or upload them to YouTube/Drive for online viewing.
+
+### Sample Frame Comparison
+
+You can compare individual frames to see the reconstruction quality:
+- Frame sequence is now temporally coherent
+- 89% average similarity between consecutive frames
+- No jarring transitions or jumps
+
+---
+
 ## 🎯 Project Overview
 
 **Problem:** Given a video with randomly shuffled frames, reconstruct the original sequence.
@@ -68,11 +95,19 @@ pip install -r requirements.txt
 
 ## 🚀 Quick Start
 
-### Option 1: Run Complete Pipeline
+### Option 1: Run Complete Pipeline (Recommended)
 ```bash
+# Activate virtual environment
+source venv/bin/activate
+
+# Run entire pipeline with automatic timing logs
 python src/run_pipeline.py
 ```
-This runs all phases automatically and logs execution time to `execution_log.txt`.
+**What this does:**
+- ✅ Automatically runs all 5 phases in sequence
+- ✅ Logs execution time for each phase
+- ✅ Saves timing data to `execution_log.txt`
+- ✅ Creates `output/reconstructed_video.mp4`
 
 ### Option 2: Run Individual Phases
 
@@ -214,12 +249,66 @@ For detailed algorithm explanation, see **[Algorithm_Description.md](Algorithm_D
 
 After running the complete pipeline:
 
-1. **frames/** - 300 extracted JPG frames
-2. **frames_features.pkl** - Serialized ORB features
-3. **similarity_matrix.npy** - NumPy array (300×300)
-4. **frame_order.pkl** - Optimal frame sequence
-5. **output/reconstructed_video.mp4** - Final reconstructed video
+1. **frames/** - 300 extracted JPG frames (numbered sequentially from original)
+2. **frames_features.pkl** - Serialized ORB features (4.6MB)
+3. **similarity_matrix.npy** - NumPy array (300×300, 352KB)
+4. **frame_order.pkl** - Optimal frame sequence (6KB)
+5. **output/reconstructed_video.mp4** - ⭐ **Final reconstructed video (62MB)**
 6. **execution_log.txt** - Timing log for all phases
+
+### File Structure After Execution
+```
+output/
+└── reconstructed_video.mp4    # The reconstructed video - ready to play!
+```
+
+**To view the result:** Open `output/reconstructed_video.mp4` in any video player (VLC, QuickTime, Windows Media Player, etc.)
+
+---
+
+## 🎥 How to View/Share Videos
+
+### Option 1: Local Playback
+```bash
+# Play the reconstructed video
+open output/reconstructed_video.mp4           # macOS
+start output\reconstructed_video.mp4          # Windows  
+xdg-open output/reconstructed_video.mp4       # Linux
+```
+
+### Option 2: Upload to Video Platform (Recommended for Sharing)
+Upload both videos to showcase your results:
+- **YouTube** - Create unlisted or public video
+- **Google Drive** - Generate shareable link
+- **Vimeo** - Upload and embed
+- **GitHub Release** - Attach files to release (< 2GB)
+
+Then add links to this README:
+```markdown
+### 📺 Video Links
+- [Jumbled Video (Before)](your-youtube-link)
+- [Reconstructed Video (After)](your-youtube-link)
+```
+
+### Option 3: Create Comparison GIF/Video
+```bash
+# Install ffmpeg if not already installed
+brew install ffmpeg           # macOS
+sudo apt install ffmpeg       # Linux
+choco install ffmpeg          # Windows
+
+# Create side-by-side comparison (first 5 seconds)
+ffmpeg -i jumbled_video.mp4 -i output/reconstructed_video.mp4 \
+  -filter_complex "[0:v]scale=480:-1[v0];[1:v]scale=480:-1[v1];[v0][v1]hstack" \
+  -t 5 -r 15 comparison.gif
+
+# Or create comparison video
+ffmpeg -i jumbled_video.mp4 -i output/reconstructed_video.mp4 \
+  -filter_complex "[0:v]scale=960:-1,drawtext=text='Jumbled':fontsize=30:x=10:y=10[v0]; \
+                   [1:v]scale=960:-1,drawtext=text='Reconstructed':fontsize=30:x=10:y=10[v1]; \
+                   [v0][v1]hstack" \
+  comparison_video.mp4
+```
 
 ---
 

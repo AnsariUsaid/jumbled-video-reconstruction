@@ -28,6 +28,7 @@ output/*
 jumbled_video.mp4
 frames_features.pkl
 similarity_matrix.npy
+frame_order.pkl
 
 # Jupyter Notebook
 .ipynb_checkpoints

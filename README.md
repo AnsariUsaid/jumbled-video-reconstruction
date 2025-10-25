@@ -6,18 +6,20 @@ A Python project to extract, analyze, and reconstruct jumbled video frames using
 
 ```
 JumbledFramesProject/
- ├── src/                         # all Python files
- │   ├── extract_frames.py        # Phase 2: Extract frames from video
- │   ├── extract_features.py      # Phase 3: Extract ORB features
- │   └── build_similarity_matrix.py # Phase 4: Build similarity matrix
- ├── frames/                      # extracted frames (300 .jpg files)
- ├── output/                      # reconstructed video will be saved here
- ├── frames_features.pkl          # saved ORB features (4.6MB)
- ├── similarity_matrix.npy        # frame similarity matrix (352KB)
- ├── README.md                    # documentation
- ├── requirements.txt             # dependency list
- ├── jumbled_video.mp4            # provided jumbled video
- └── venv/                        # virtual environment
+ ├── src/                              # all Python files
+ │   ├── extract_frames.py             # Phase 2: Extract frames from video
+ │   ├── extract_features.py           # Phase 3: Extract ORB features
+ │   ├── build_similarity_matrix.py    # Phase 4: Build similarity matrix
+ │   └── order_frames.py               # Phase 5A: Determine optimal order
+ ├── frames/                           # extracted frames (300 .jpg files)
+ ├── output/                           # reconstructed video will be saved here
+ ├── frames_features.pkl               # saved ORB features (4.6MB)
+ ├── similarity_matrix.npy             # frame similarity matrix (352KB)
+ ├── frame_order.pkl                   # optimal frame ordering
+ ├── README.md                         # documentation
+ ├── requirements.txt                  # dependency list
+ ├── jumbled_video.mp4                 # provided jumbled video
+ └── venv/                             # virtual environment
 ```
 
 ## 🧰 Setup Instructions
@@ -77,7 +79,26 @@ python src/build_similarity_matrix.py
 - Counts matches and stores in 300x300 similarity matrix
 - Saves matrix to `similarity_matrix.npy` for next phase
 
-### Phase 5: Frame Ordering & Video Reconstruction (Coming Next)
+### Phase 5A: Determine Optimal Frame Order ✅
+```bash
+python src/order_frames.py
+```
+- Loads similarity matrix from Phase 4
+- Uses graph-based approach with hybrid optimization
+- Finds best starting pair (highest similarity frames)
+- Builds initial path using nearest neighbor algorithm
+- Applies 2-opt optimization to improve the path
+- Saves optimal frame order to `frame_order.pkl`
+
+**Algorithm Details:**
+- **Step 1**: Find the two frames with highest similarity (likely consecutive)
+- **Step 2**: Build path from both directions using greedy nearest neighbor
+- **Step 3**: Apply 2-opt local optimization to improve path quality
+- **Result**: Near-optimal frame sequence with high consecutive similarities
+
+### Phase 5B: Video Reconstruction (Coming Next)
+- Reconstruct video using the determined frame order
+- Save to `output/reconstructed_video.mp4`
 - Reconstruct video in correct order
 - Save to `output/reconstructed_video.mp4`
 
@@ -90,4 +111,5 @@ This project uses ORB (Oriented FAST and Rotated BRIEF) features for frame simil
 - ✅ Phase 2: 300 frames extracted from jumbled video
 - ✅ Phase 3: ORB features extracted and saved (4.6MB features file)
 - ✅ Phase 4: Similarity matrix built (300x300, 352KB)
-- ⏳ Phase 5: Frame ordering & video reconstruction (next step)
+- ✅ Phase 5A: Optimal frame order determined (avg similarity: 445/500)
+- ⏳ Phase 5B: Video reconstruction (final step)

@@ -10,7 +10,8 @@ A Python project to reconstruct jumbled video frames using **computer vision (OR
 |---------------|---------------------|
 | 300 randomly shuffled frames | Correctly ordered sequence |
 | No temporal coherence | Smooth, coherent playback |
-| [jumbled_video.mp4](jumbled_video.mp4) | [reconstructed_video.mp4](output/reconstructed_video.mp4) |
+| 🎥 [**Watch Jumbled Video**](https://drive.google.com/file/d/1XdR-mheAkt_vi5SHwG9B7Hxqn_0-INVv/view?usp=sharing) | 🎥 [**Watch Reconstructed Video**](https://drive.google.com/file/d/1K9LEC97fol47eeqc46OXMfhhv299g1yv/view?usp=sharing) |
+| 86MB | 62MB |
 
 **Video Specifications:**
 - Resolution: 1920×1080 (Full HD)
@@ -18,14 +19,19 @@ A Python project to reconstruct jumbled video frames using **computer vision (OR
 - Duration: 10 seconds
 - Total Frames: 300
 
-> **Note:** Clone the repository and play the videos locally, or upload them to YouTube/Drive for online viewing.
+### 🎯 See The Results!
 
-### Sample Frame Comparison
+**Click the links above to watch:**
+- **[Jumbled Video](https://drive.google.com/file/d/1XdR-mheAkt_vi5SHwG9B7Hxqn_0-INVv/view?usp=sharing)** - Random frame order (the problem)
+- **[Reconstructed Video](https://drive.google.com/file/d/1K9LEC97fol47eeqc46OXMfhhv299g1yv/view?usp=sharing)** - Correctly ordered frames (the solution)
 
-You can compare individual frames to see the reconstruction quality:
-- Frame sequence is now temporally coherent
-- 89% average similarity between consecutive frames
-- No jarring transitions or jumps
+### Quality Metrics
+
+After reconstruction:
+- ✅ 89% average similarity between consecutive frames
+- ✅ Smooth, coherent playback
+- ✅ No jarring transitions or jumps
+- ✅ All 300 frames correctly ordered
 
 ---
 

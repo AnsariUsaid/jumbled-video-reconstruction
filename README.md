@@ -10,7 +10,7 @@ A Python project to reconstruct jumbled video frames using **computer vision (OR
 |---------------|---------------------|
 | 300 randomly shuffled frames | Correctly ordered sequence |
 | No temporal coherence | Smooth, coherent playback |
-| 🎥 [**Watch Jumbled Video**](https://drive.google.com/file/d/1XdR-mheAkt_vi5SHwG9B7Hxqn_0-INVv/view?usp=sharing) | 🎥 [**Watch Reconstructed Video**](https://drive.google.com/file/d/1K9LEC97fol47eeqc46OXMfhhv299g1yv/view?usp=sharing) |
+| 🎥 [**Watch Jumbled Video**](https://drive.google.com/file/d/1Rzi3UD2sxJbSYcNVARlPqvLbA7PBAKIH/view?usp=sharing) | 🎥 [**Watch Reconstructed Video**](https://drive.google.com/file/d/1s1Cir_J_sommAQWMEaIXUlTXQYM29-Fj/view?usp=sharing) |
 | 86MB | 62MB |
 
 **Video Specifications:**
@@ -22,8 +22,8 @@ A Python project to reconstruct jumbled video frames using **computer vision (OR
 ### 🎯 See The Results!
 
 **Click the links above to watch:**
-- **[Jumbled Video](https://drive.google.com/file/d/1XdR-mheAkt_vi5SHwG9B7Hxqn_0-INVv/view?usp=sharing)** - Random frame order (the problem)
-- **[Reconstructed Video](https://drive.google.com/file/d/1K9LEC97fol47eeqc46OXMfhhv299g1yv/view?usp=sharing)** - Correctly ordered frames (the solution)
+- **[Jumbled Video](https://drive.google.com/file/d/1Rzi3UD2sxJbSYcNVARlPqvLbA7PBAKIH/view?usp=sharing)** - Random frame order (the problem)
+- **[Reconstructed Video](https://drive.google.com/file/d/1s1Cir_J_sommAQWMEaIXUlTXQYM29-Fj/view?usp=sharing)** - Correctly ordered frames (the solution)
 
 ### Quality Metrics
 

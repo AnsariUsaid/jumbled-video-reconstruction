@@ -26,6 +26,7 @@ frames/*
 output/*
 !output/.gitkeep
 jumbled_video.mp4
+frames_features.pkl
 
 # Jupyter Notebook
 .ipynb_checkpoints

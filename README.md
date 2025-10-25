@@ -6,16 +6,18 @@ A Python project to extract, analyze, and reconstruct jumbled video frames using
 
 ```
 JumbledFramesProject/
- ├── src/                    # all Python files
- │   ├── extract_frames.py   # Phase 2: Extract frames from video
- │   └── extract_features.py # Phase 3: Extract ORB features
- ├── frames/                 # extracted frames (300 .jpg files)
- ├── output/                 # reconstructed video will be saved here
- ├── frames_features.pkl     # saved ORB features (4.6MB)
- ├── README.md               # documentation
- ├── requirements.txt        # dependency list
- ├── jumbled_video.mp4       # provided jumbled video
- └── venv/                   # virtual environment
+ ├── src/                         # all Python files
+ │   ├── extract_frames.py        # Phase 2: Extract frames from video
+ │   ├── extract_features.py      # Phase 3: Extract ORB features
+ │   └── build_similarity_matrix.py # Phase 4: Build similarity matrix
+ ├── frames/                      # extracted frames (300 .jpg files)
+ ├── output/                      # reconstructed video will be saved here
+ ├── frames_features.pkl          # saved ORB features (4.6MB)
+ ├── similarity_matrix.npy        # frame similarity matrix (352KB)
+ ├── README.md                    # documentation
+ ├── requirements.txt             # dependency list
+ ├── jumbled_video.mp4            # provided jumbled video
+ └── venv/                        # virtual environment
 ```
 
 ## 🧰 Setup Instructions
@@ -65,12 +67,17 @@ python src/extract_features.py
 - Extracts keypoints and descriptors using OpenCV's ORB_create()
 - Saves features to `frames_features.pkl` for next step
 
-### Phase 4: Frame Comparison & Ordering (Coming Next)
-- Compare frames using extracted ORB descriptors
-- Build similarity matrix
-- Determine correct frame order
+### Phase 4: Build Similarity Matrix ✅
+```bash
+python src/build_similarity_matrix.py
+```
+- Loads saved ORB descriptors from `frames_features.pkl`
+- Creates Brute-Force Matcher with Hamming distance (optimal for ORB)
+- Compares every frame pair (i ≠ j) - 44,850 comparisons for 300 frames
+- Counts matches and stores in 300x300 similarity matrix
+- Saves matrix to `similarity_matrix.npy` for next phase
 
-### Phase 5: Video Reconstruction (Coming Next)
+### Phase 5: Frame Ordering & Video Reconstruction (Coming Next)
 - Reconstruct video in correct order
 - Save to `output/reconstructed_video.mp4`
 
@@ -82,5 +89,5 @@ This project uses ORB (Oriented FAST and Rotated BRIEF) features for frame simil
 - ✅ Phase 1: Project setup complete
 - ✅ Phase 2: 300 frames extracted from jumbled video
 - ✅ Phase 3: ORB features extracted and saved (4.6MB features file)
-- ⏳ Phase 4: Frame comparison (next step)
-- ⏳ Phase 5: Video reconstruction (final step)
+- ✅ Phase 4: Similarity matrix built (300x300, 352KB)
+- ⏳ Phase 5: Frame ordering & video reconstruction (next step)

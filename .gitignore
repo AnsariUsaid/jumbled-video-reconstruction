@@ -27,6 +27,7 @@ output/*
 !output/.gitkeep
 jumbled_video.mp4
 frames_features.pkl
+similarity_matrix.npy
 
 # Jupyter Notebook
 .ipynb_checkpoints

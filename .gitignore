@@ -20,15 +20,12 @@ ENV/
 .DS_Store
 Thumbs.db
 
-# Project specific
+# Generated files
 frames/*
 !frames/.gitkeep
-output/*
-!output/.gitkeep
-jumbled_video.mp4
-frames_features.pkl
-similarity_matrix.npy
-frame_order.pkl
+*.pkl
+*.npy
+execution_log.txt
 execution_log.txt
 
 # Jupyter Notebook

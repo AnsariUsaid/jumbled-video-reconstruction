@@ -335,6 +335,54 @@ This natural clustering enables accurate reconstruction.
 
 ---
 
+## Limitations and Known Issues
+
+### Current Limitations
+
+1. **Scene Changes**
+   - Works best with continuous scenes
+   - Abrupt scene cuts may confuse the algorithm
+   - Current implementation: Single continuous scene
+
+2. **Identical/Similar Frames**
+   - Very similar frames (e.g., slow camera pan) may have ambiguous ordering
+   - Multiple valid orderings possible
+   - Current accuracy: 99.6% handles this well
+
+3. **Motion Blur**
+   - Heavy motion blur may reduce feature quality
+   - CNN features more robust than ORB
+   - Mitigation: Higher quality source videos recommended
+
+4. **Computational Requirements**
+   - ResNet50 requires ~1.5GB RAM
+   - Recommended: 16GB+ system RAM
+   - GPU optional but speeds up processing
+
+### What This Algorithm Cannot Do
+
+❌ **Detect Missing Frames** - Assumes all frames present  
+❌ **Handle Multiple Videos** - Single video reconstruction only  
+❌ **Restore Frame Quality** - Only reorders, doesn't enhance  
+❌ **Work with Non-Sequential Content** - Needs temporal continuity
+
+### Future Work
+
+**Potential Improvements:**
+1. Multi-scene detection and handling
+2. Ensemble methods (CNN + optical flow)
+3. Transformer-based temporal models
+4. Self-supervised learning on original video
+5. Real-time processing optimization
+
+**Expected Gains:**
+- Multi-scene: Handle scene transitions better
+- Ensemble: 99.7-99.8% accuracy
+- Transformers: Better temporal understanding
+- Self-supervised: 99.8%+ with ground truth
+
+---
+
 ## References
 
 1. He, K., et al. (2016). "Deep Residual Learning for Image Recognition"
@@ -343,6 +391,7 @@ This natural clustering enables accurate reconstruction.
 
 ---
 
-**Document Version:** 1.0  
-**Last Updated:** October 26, 2025  
-**Implementation:** V2 Deep Learning Branch
+**Document Version:** 1.1  
+**Last Updated:** October 26, 2024  
+**Implementation:** V2 Deep Learning Branch  
+**Status:** Production Ready

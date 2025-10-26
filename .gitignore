@@ -26,7 +26,18 @@ frames/*
 *.pkl
 *.npy
 execution_log.txt
-execution_log.txt
+
+# Video files
+*.mp4
+*.avi
+*.mov
+*.mkv
+output/
+
+# Logs
+*.log
+*.txt
+flow_output.txt
 
 # Jupyter Notebook
 .ipynb_checkpoints

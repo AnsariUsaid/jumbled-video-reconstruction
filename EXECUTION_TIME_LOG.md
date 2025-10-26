@@ -1,9 +1,11 @@
 # Execution Time Log
 
 ## System Specifications
-- **Processor**: 12th Gen Intel(R) Core(TM) i7-12650H (2.30 GHz)
-- **RAM**: 16.0 GB
-- **System Type**: 64-bit operating system, x64-based processor
+- **Device**: MacBook Air M1
+- **Processor**: Apple M1 chip
+- **RAM**: 8 GB
+- **Storage**: 256 GB
+- **System Type**: ARM64 architecture
 
 ## V1: ORB-based Approach
 
@@ -69,7 +71,7 @@
 | **Feature Quality** | Low-level (edges, corners) | High-level (semantic) |
 | **Similarity Accuracy** | ~85% | ~99.6% |
 | **Memory Usage** | ~500 MB | ~1.2 GB |
-| **Reconstruction Quality** | Moderate (many jumps) | Excellent (smooth transitions) |
+| **Reconstruction Quality** | Moderate (many jumps) | Improved (fewer jumps, but still present) |
 
 ---
 
@@ -90,8 +92,13 @@
 
 ## Conclusion
 
-**V2 (Deep Learning Approach)** is recommended despite slightly longer execution time because:
+**V2 (Deep Learning Approach)** shows improvement over V1 despite slightly longer execution time because:
 - 99.6% average similarity vs 85% in V1
 - Semantic understanding leads to more accurate frame ordering
-- Smoother transitions with fewer reconstruction errors
-- Trade-off of 14 extra seconds is justified by 14.6% accuracy improvement
+- Better consecutive frame similarity scores
+- Trade-off of 14 extra seconds provides 14.6% similarity improvement
+
+**However, both approaches still have limitations:**
+- Visible frame jumps remain in reconstructed video
+- Not yet suitable for production-quality reconstruction
+- Further improvements needed (see V2_Algorithm_Description.md for future work)

@@ -288,17 +288,20 @@ Final Quality: Excellent (99.6%)
 ## Conclusion
 
 V2 with CNN features and cosine similarity provides:
-- **+10.57%** accuracy improvement
+- **+10.57%** similarity score improvement
 - **More consistent** results (lower std deviation)
 - **Better semantic** understanding of scenes
 - **Faster** similarity computation (vectorized)
 
-The trade-off is:
+The trade-offs are:
 - Larger dependency (TensorFlow)
 - Higher memory usage (~1.5GB)
 - Slightly longer feature extraction (~30s more)
+- **Still has visible frame jumps** - similarity scores alone don't guarantee perfect temporal ordering
 
-For production systems where accuracy matters, **V2 is the clear winner**.
+For production systems requiring perfect reconstruction, **additional improvements needed** (see Future Work below).
+
+For research and demonstration of frame similarity techniques, **V2 shows clear improvement over V1**.
 
 For quick prototyping or resource-constrained environments, **V1 remains viable**.
 
@@ -347,16 +350,21 @@ This natural clustering enables accurate reconstruction.
 2. **Identical/Similar Frames**
    - Very similar frames (e.g., slow camera pan) may have ambiguous ordering
    - Multiple valid orderings possible
-   - Current accuracy: 99.6% handles this well
+   - Despite 99.6% similarity score, visible jumps still occur in reconstruction
 
-3. **Motion Blur**
+3. **Ordering Accuracy**
+   - High similarity scores don't guarantee perfect temporal ordering
+   - Greedy nearest-neighbor approach can get stuck in local optima
+   - Some frames may be placed incorrectly despite high feature similarity
+
+4. **Motion Blur**
    - Heavy motion blur may reduce feature quality
-   - CNN features more robust than ORB
+   - CNN features more robust than ORB but not immune
    - Mitigation: Higher quality source videos recommended
 
-4. **Computational Requirements**
+5. **Computational Requirements**
    - ResNet50 requires ~1.5GB RAM
-   - Recommended: 16GB+ system RAM
+   - Recommended: 16GB+ system RAM (tested on 8GB M1 MacBook Air)
    - GPU optional but speeds up processing
 
 ### What This Algorithm Cannot Do
@@ -369,17 +377,23 @@ This natural clustering enables accurate reconstruction.
 ### Future Work
 
 **Potential Improvements:**
-1. Multi-scene detection and handling
-2. Ensemble methods (CNN + optical flow)
-3. Transformer-based temporal models
-4. Self-supervised learning on original video
-5. Real-time processing optimization
+1. **Ensemble Methods** - Combine CNN features with optical flow analysis
+2. **Better Path Finding** - Replace greedy nearest-neighbor with optimal TSP solvers
+3. **Transformer Models** - Use temporal transformers (e.g., TimeSFormer) for better sequence understanding
+4. **Self-supervised Learning** - Train on sequential video data to learn temporal patterns
+5. **Hybrid Scoring** - Combine multiple metrics (CNN similarity + optical flow + color histograms)
+6. **Local Re-ordering** - Post-process to fix obvious discontinuities
 
 **Expected Gains:**
-- Multi-scene: Handle scene transitions better
-- Ensemble: 99.7-99.8% accuracy
-- Transformers: Better temporal understanding
-- Self-supervised: 99.8%+ with ground truth
+- Ensemble + TSP solver: Potentially 30-50% reduction in visible jumps
+- Transformers: Better temporal understanding but requires GPU
+- Self-supervised: Best results but needs labeled sequential data
+- Hybrid scoring: More robust to edge cases
+
+**Realistic Assessment:**
+- Current V2: Good similarity scores (99.6%) but imperfect ordering
+- With improvements: Could achieve significantly better temporal accuracy
+- Perfect reconstruction: May require labeled ground truth or additional constraints
 
 ---
 

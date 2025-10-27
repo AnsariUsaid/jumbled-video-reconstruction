@@ -13,7 +13,7 @@ A Python project to reconstruct jumbled video frames using computer vision and g
 | Jumbled Video | V1 Reconstructed | V2 Reconstructed |
 |---------------|------------------|------------------|
 | Random order | ORB (89% accuracy) | CNN (99.6% accuracy) ⭐ |
-| 🎥 [**Watch**](https://drive.google.com/file/d/1Rzi3UD2sxJbSYcNVARlPqvLbA7PBAKIH/view?usp=sharing) | 🎥 [**Watch V1**](https://drive.google.com/file/d/1s1Cir_J_sommAQWMEaIXUlTXQYM29-Fj/view?usp=sharing) | 🎥 **V2** (Upload soon) |
+| 🎥 [**Watch**](https://drive.google.com/file/d/1Rzi3UD2sxJbSYcNVARlPqvLbA7PBAKIH/view?usp=sharing) | 🎥 [**Watch V1**](https://drive.google.com/file/d/1s1Cir_J_sommAQWMEaIXUlTXQYM29-Fj/view?usp=sharing) | 🎥 [**Watch V2**](https://drive.google.com/file/d/1neINE83qJeY4Sc_N3AW9jvE_SI8vtXZi/view?usp=sharing) |
 | 86MB | 62MB | 64MB |
 
 **Video Specifications:**
@@ -76,7 +76,8 @@ JumbledFramesProject/
  │   │   ├── extract_features_cnn.py      # ResNet50 feature extraction
  │   │   ├── build_similarity_matrix_cnn.py # Cosine similarity
  │   │   ├── order_frames_improved.py     # Same graph algorithm
- │   │   └── reconstruct_video.py         # Rebuild video
+ │   │   ├── reconstruct_video.py         # Rebuild video
+ │   │   └── run_pipeline.py              # Run complete V2 pipeline ⭐
  │   │
  │   └── comparison/                      # Compare V1 vs V2
  │       └── compare_results.py
@@ -132,22 +133,24 @@ pip install -r requirements.txt
 
 ## 🚀 Quick Start
 
-### Option 1: Run V2 (CNN) - Best Quality ⭐
+### Option 1: Run V2 (CNN) - Best Quality ⭐ RECOMMENDED
 
 ```bash
 source venv/bin/activate
 cd src/v2_deeplearning
 
-# Extract frames (if not done)
-python extract_frames.py
+# Run complete V2 pipeline (one command)
+python run_pipeline.py                   # ~2-3 minutes total
 
-# Run V2 pipeline
+# Output: output/reconstructed_video_cnn.mp4 (99.6% accuracy)
+```
+
+**Or run individual steps:**
+```bash
 python extract_features_cnn.py          # ~60 seconds
 python build_similarity_matrix_cnn.py   # ~2 seconds
 python order_frames_improved.py         # ~5 seconds
 python reconstruct_video.py             # ~5 seconds
-
-# Output: output/reconstructed_video_cnn.mp4 (99.6% accuracy)
 ```
 
 ### Option 2: Run V1 (ORB) - Faster Setup
@@ -156,7 +159,7 @@ python reconstruct_video.py             # ~5 seconds
 source venv/bin/activate
 cd src/v1_orb
 
-# Run V1 pipeline
+# Run complete V1 pipeline
 python run_pipeline.py                  # ~4 minutes total
 
 # Output: output/reconstructed_video.mp4 (89% accuracy)

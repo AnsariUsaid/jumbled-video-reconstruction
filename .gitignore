@@ -42,5 +42,10 @@ flow_output.txt
 # Jupyter Notebook
 .ipynb_checkpoints
 
-# Project-specific
+
+
+*.csv
+
+# Project documentation files
 CHECKLIST.md
+checklist.md

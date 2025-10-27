@@ -2,19 +2,21 @@
 
 A Python project to reconstruct jumbled video frames using computer vision and graph-based optimization.
 
-**Two approaches implemented:**
-- **V1 (ORB)**: 89% accuracy using ORB features + Hamming distance
-- **V2 (CNN)**: 99.6% accuracy using ResNet50 + Cosine similarity ⭐
+**Four approaches implemented:**
+- **V1 (ORB)**: 89% similarity using ORB features + Hamming distance
+- **V2 (CNN)**: 99.6% similarity using ResNet50 + Cosine similarity
+- **V3 (Distance)**: Person tracking with distance-based ordering
+- **V4 (YOLO)**: 99% detection rate using YOLOv8 + Nearest Neighbor ⭐ **BEST**
 
 ## 🎬 Demo
 
 ### Before (Jumbled) vs After (Reconstructed)
 
-| Jumbled Video | V1 Reconstructed | V2 Reconstructed |
-|---------------|------------------|------------------|
-| Random order | ORB (89% accuracy) | CNN (99.6% accuracy) ⭐ |
-| 🎥 [**Watch**](https://drive.google.com/file/d/1Rzi3UD2sxJbSYcNVARlPqvLbA7PBAKIH/view?usp=sharing) | 🎥 [**Watch V1**](https://drive.google.com/file/d/1s1Cir_J_sommAQWMEaIXUlTXQYM29-Fj/view?usp=sharing) | 🎥 [**Watch V2**](https://drive.google.com/file/d/1neINE83qJeY4Sc_N3AW9jvE_SI8vtXZi/view?usp=sharing) |
-| 86MB | 62MB | 64MB |
+| Jumbled Video | V1 Reconstructed | V2 Reconstructed | V4 Reconstructed |
+|---------------|------------------|------------------|------------------|
+| Random order | ORB (89% similarity) | CNN (99.6% similarity) | YOLO (5.7px avg step) ⭐ |
+| 🎥 [**Watch**](https://drive.google.com/file/d/1Rzi3UD2sxJbSYcNVARlPqvLbA7PBAKIH/view?usp=sharing) | 🎥 [**Watch V1**](https://drive.google.com/file/d/1s1Cir_J_sommAQWMEaIXUlTXQYM29-Fj/view?usp=sharing) | 🎥 [**Watch V2**](https://drive.google.com/file/d/1neINE83qJeY4Sc_N3AW9jvE_SI8vtXZi/view?usp=sharing) | 🎥 [**Watch V4**](https://drive.google.com/file/d/1ALhd1qUhMGspCIEmxpIiORcFw-T5unA7/view?usp=sharing) |
+| 86MB | 62MB | 64MB | 54MB |
 
 **Video Specifications:**
 - Resolution: 1920×1080 (Full HD)
@@ -24,12 +26,14 @@ A Python project to reconstruct jumbled video frames using computer vision and g
 
 ### Comparison
 
-| Metric | V1 (ORB) | V2 (CNN) | Improvement |
-|--------|----------|----------|-------------|
-| Average Similarity | 445/500 (89.0%) | 995.68/1000 (99.57%) | +10.57% |
-| Min Similarity | 363/500 (72.6%) | 972/1000 (97.2%) | +24.6% |
-| Std Deviation | 8.62 | 3.73 | 57% better |
-| Weak Transitions | 1 | 0 | Perfect |
+| Metric | V1 (ORB) | V2 (CNN) | V4 (YOLO) ⭐ | Best |
+|--------|----------|----------|--------------|------|
+| Average Similarity | 445/500 (89.0%) | 995.68/1000 (99.57%) | - | V2 |
+| Detection Rate | - | - | 99% (297/300) | V4 |
+| Avg Step Distance | - | - | 5.7 pixels | V4 |
+| File Size | 62MB | 64MB | 54MB | V4 |
+| Speed | ~4 min | ~3 min | ~2 min | V4 |
+| Visual Quality | Good | Excellent | **Excellent** ⭐ | **V4** |
 
 ---
 
@@ -45,13 +49,29 @@ A Python project to reconstruct jumbled video frames using computer vision and g
 
 **Results:** 89% average consecutive frame similarity
 
-### V2: CNN Features + Cosine Similarity ⭐ RECOMMENDED
+### V2: CNN Features + Cosine Similarity
 1. Extract deep features using pre-trained ResNet50 (2048-dim vectors)
 2. Build similarity matrix using cosine similarity (vectorized, fast)
 3. Use same graph-based optimization (proven to work well)
 4. Reconstruct video with highly accurate ordering
 
 **Results:** 99.6% average consecutive frame similarity (+10.57% improvement)
+
+### V4: YOLO Object Detection + Nearest Neighbor ⭐ **RECOMMENDED**
+1. Detect person in each frame using YOLOv8 (99% detection rate)
+2. Track person centroid position (x, y) across frames
+3. Start from bottom-right corner, greedily select nearest unvisited frame
+4. Build smooth path with average 5.7 pixel displacement between frames
+
+**Results:** Excellent visual quality with smooth transitions, fastest execution (~2 min)
+
+**Why V4 is Best:**
+- ✅ Direct spatial tracking (uses actual person position, not image features)
+- ✅ Fastest execution time (~2 minutes vs 3-4 minutes)
+- ✅ Smallest file size (54MB vs 62-64MB)
+- ✅ Very smooth motion (5.7px average step)
+- ✅ Simple and interpretable algorithm
+- ✅ Robust to lighting and background changes
 
 ---
 - ✅ 62MB reconstructed video (1920×1080, 30 FPS)
@@ -71,21 +91,29 @@ JumbledFramesProject/
  │   │   ├── logger.py                    # Execution time logging
  │   │   └── run_pipeline.py              # Run complete V1 pipeline
  │   │
- │   ├── v2_deeplearning/                 # V2: CNN Features Approach ⭐
+ │   ├── v2_deeplearning/                 # V2: CNN Features Approach
  │   │   ├── extract_frames.py            # Reused from V1
  │   │   ├── extract_features_cnn.py      # ResNet50 feature extraction
  │   │   ├── build_similarity_matrix_cnn.py # Cosine similarity
  │   │   ├── order_frames_improved.py     # Same graph algorithm
  │   │   ├── reconstruct_video.py         # Rebuild video
- │   │   └── run_pipeline.py              # Run complete V2 pipeline ⭐
+ │   │   └── run_pipeline.py              # Run complete V2 pipeline
  │   │
- │   └── comparison/                      # Compare V1 vs V2
+ │   ├── v4_yolo_tracking/                # V4: YOLO + Nearest Neighbor ⭐ BEST
+ │   │   ├── 1_extract_tracking_data.py   # YOLOv8 person detection
+ │   │   ├── 2_compute_frame_order.py     # Nearest neighbor ordering
+ │   │   ├── 3_reconstruct_video.py       # Video reconstruction
+ │   │   ├── run_pipeline.py              # Run complete V4 pipeline ⭐
+ │   │   └── README.md                    # V4 documentation
+ │   │
+ │   └── comparison/                      # Compare approaches
  │       └── compare_results.py
  │
  ├── frames/                              # Extracted frames (300 .jpg)
  ├── output/
  │   ├── reconstructed_video.mp4          # V1 output (62MB, 89%)
- │   └── reconstructed_video_cnn.mp4      # V2 output (64MB, 99.6%)
+ │   ├── reconstructed_video_cnn.mp4      # V2 output (64MB, 99.6%)
+ │   └── reconstructed_video_v4.mp4       # V4 output (54MB) ⭐ BEST
  │
  ├── Algorithm_Description.md             # V1 algorithm documentation
  ├── V2_Algorithm_Description.md          # V2 algorithm documentation
@@ -126,6 +154,12 @@ scikit-learn
 matplotlib
 ```
 
+### V4 (YOLO Approach) - Additional ⭐
+```
+ultralytics
+pandas
+```
+
 Install all dependencies:
 ```bash
 pip install -r requirements.txt
@@ -133,7 +167,32 @@ pip install -r requirements.txt
 
 ## 🚀 Quick Start
 
-### Option 1: Run V2 (CNN) - Best Quality ⭐ RECOMMENDED
+### Option 1: Run V4 (YOLO) - Best Overall ⭐ **RECOMMENDED**
+
+```bash
+source venv/bin/activate
+cd src/v4_yolo_tracking
+
+# Run complete V4 pipeline (one command)
+python run_pipeline.py                   # ~2 minutes total
+
+# Output: output/reconstructed_video_v4.mp4
+```
+
+**Or run individual steps:**
+```bash
+python 1_extract_tracking_data.py       # ~60 seconds - YOLO detection
+python 2_compute_frame_order.py         # ~5 seconds - Nearest neighbor
+python 3_reconstruct_video.py           # ~10 seconds - Video creation
+```
+
+**Why V4?**
+- ⚡ Fastest execution (~2 minutes)
+- 🎯 Most accurate person tracking (99% detection)
+- 📹 Excellent visual quality (5.7px avg motion)
+- 💾 Smallest file size (54MB)
+
+### Option 2: Run V2 (CNN) - Best Similarity Score
 
 ```bash
 source venv/bin/activate
@@ -142,7 +201,7 @@ cd src/v2_deeplearning
 # Run complete V2 pipeline (one command)
 python run_pipeline.py                   # ~2-3 minutes total
 
-# Output: output/reconstructed_video_cnn.mp4 (99.6% accuracy)
+# Output: output/reconstructed_video_cnn.mp4 (99.6% similarity)
 ```
 
 **Or run individual steps:**
@@ -153,7 +212,7 @@ python order_frames_improved.py         # ~5 seconds
 python reconstruct_video.py             # ~5 seconds
 ```
 
-### Option 2: Run V1 (ORB) - Faster Setup
+### Option 3: Run V1 (ORB) - Baseline Approach
 
 ```bash
 source venv/bin/activate
@@ -162,7 +221,7 @@ cd src/v1_orb
 # Run complete V1 pipeline
 python run_pipeline.py                  # ~4 minutes total
 
-# Output: output/reconstructed_video.mp4 (89% accuracy)
+# Output: output/reconstructed_video.mp4 (89% similarity)
 ```
 
 #### Phase 1: Setup ✅
@@ -390,39 +449,58 @@ ffmpeg -i jumbled_video.mp4 -i output/reconstructed_video.mp4 \
 
 ## 📖 Documentation
 
-- **[README.md](README.md)** - Main project documentation with V1 and V2 comparison
+- **[README.md](README.md)** - Main project documentation with all approaches
 - **[Algorithm_Description.md](Algorithm_Description.md)** - V1 ORB approach details
 - **[V2_Algorithm_Description.md](V2_Algorithm_Description.md)** - V2 CNN approach with trade-offs analysis
+- **[src/v4_yolo_tracking/README.md](src/v4_yolo_tracking/README.md)** - V4 YOLO approach documentation
 - **[UTILITIES.md](UTILITIES.md)** - Utility files explained
 
-## 🔬 Why Two Approaches?
+## 🔬 Why Multiple Approaches?
 
 This project demonstrates **iterative improvement** in machine learning projects:
 
-1. **Start with V1 (ORB):** Fast to implement, good baseline (89%)
-2. **Identify limitations:** ORB only captures local features
-3. **Improve with V2 (CNN):** Semantic understanding, better accuracy (99.6%)
+1. **V1 (ORB):** Fast to implement, good baseline (89% similarity)
+   - Limitation: Only captures local features, misses semantic context
+   
+2. **V2 (CNN):** Semantic understanding, excellent similarity (99.6%)
+   - Limitation: Computationally expensive, slower execution
+   
+3. **V4 (YOLO):** Direct object tracking, best overall results ⭐
+   - Advantage: Tracks actual person position, not image features
+   - Fastest execution, smallest file size, excellent visual quality
 
-This is how real-world ML projects evolve! Both approaches are preserved to show:
+This is how real-world ML projects evolve! All approaches are preserved to show:
 - The problem-solving process
-- Trade-offs between approaches
+- Trade-offs between approaches (speed vs accuracy vs complexity)
 - When to use which method
+
+**Recommendation:** Use **V4** for best overall results (speed + quality + simplicity)
 
 ---
 
 ## 🎉 Project Status
 
-**✅ ALL PHASES COMPLETE**
+**✅ ALL APPROACHES COMPLETE**
 
-- ✅ Phase 1: Project setup and dependencies
-- ✅ Phase 2: Frame extraction (300 frames)
-- ✅ Phase 3: ORB feature extraction (150,000 keypoints)
-- ✅ Phase 4: Similarity matrix construction (90,000 comparisons)
-- ✅ Phase 5A: Optimal frame ordering (graph-based)
-- ✅ Phase 5B: Video reconstruction (62MB output)
-- ✅ Phase 6: Documentation and optimization
+### V1 (ORB - Baseline)
+- ✅ ORB feature extraction (150,000 keypoints)
+- ✅ Hamming distance similarity matrix
+- ✅ Graph-based ordering
+- ✅ Video reconstruction (62MB, 89% similarity)
 
-**Results:** Successfully reconstructed jumbled video with 89% average frame similarity using computer vision and graph-based optimization.
+### V2 (CNN - High Similarity)
+- ✅ ResNet50 deep feature extraction
+- ✅ Cosine similarity matrix
+- ✅ Graph-based ordering
+- ✅ Video reconstruction (64MB, 99.6% similarity)
+
+### V4 (YOLO - Best Overall) ⭐
+- ✅ YOLOv8 person detection (99% detection rate)
+- ✅ Nearest neighbor greedy ordering
+- ✅ Video reconstruction (54MB, 5.7px avg step)
+- ✅ **RECOMMENDED** for best results
+
+**Results:** Successfully reconstructed jumbled video using three different approaches. **V4 (YOLO)** provides the best balance of speed, quality, and simplicity.
 
 ---
 

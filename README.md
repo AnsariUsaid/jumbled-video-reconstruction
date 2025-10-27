@@ -506,7 +506,7 @@ This is how real-world ML projects evolve! All approaches are preserved to show:
 
 ## 👨‍💻 Author
 
-**Usaid Ansari**
+**Ansari Usaid Anzer**
 - GitHub: [@AnsariUsaid](https://github.com/AnsariUsaid)
 - Repository: [jumbled-video-reconstruction](https://github.com/AnsariUsaid/jumbled-video-reconstruction)
 

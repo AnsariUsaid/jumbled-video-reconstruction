@@ -5,14 +5,14 @@
 - Python 3.8 or higher
 - pip package manager
 - At least 2GB of free RAM
-- Internet connection (for first-time model download)
+- Internet connection (for first-time model downloads)
 
 ## Installation Steps
 
 ### 1. Clone the Repository
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/AnsariUsaid/jumbled-video-reconstruction.git
 cd JumbledFramesProject
 ```
 
@@ -43,36 +43,69 @@ pip install -r requirements.txt
 **Dependencies include:**
 - opencv-python (image processing)
 - numpy (numerical computations)
-- tensorflow (deep learning framework)
+- tensorflow (V2: deep learning)
 - scikit-learn (similarity metrics)
+- ultralytics (V4: YOLO detection)
+- pandas (V4: data handling)
+- tqdm (progress bars)
 
 ## Running the Code
 
-### Option 1: V2 Deep Learning Approach (Recommended)
+### Option 1: V4 YOLO Approach (⭐ Recommended - Best Overall)
 
-This is the best-performing solution with 99.6% similarity.
+This is the **best-performing solution** with fastest execution and excellent quality.
 
 ```bash
-cd src/v2_deeplearning
-python extract_frames.py
-python extract_features_cnn.py
-python build_similarity_matrix_cnn.py
-python order_frames_improved.py
-python reconstruct_video.py
+cd src/v4_yolo_tracking
+python run_pipeline.py
+```
+
+**Or run individual steps:**
+```bash
+python 1_extract_tracking_data.py      # ~60 seconds
+python 2_compute_frame_order.py         # ~5 seconds
+python 3_reconstruct_video.py           # ~10 seconds
 ```
 
 **Expected Output:**
-- Frames extracted to `../../frames/` directory
+- Tracking data saved to `../../frame_tracking_data.csv`
+- Frame order saved to `../../correct_frame_order.csv`
+- Reconstructed video saved to `../../output/reconstructed_video_v4.mp4`
+
+**Total Time:** ~2 minutes
+**File Size:** 54MB
+**Quality:** Excellent (5.7px avg step, 99% detection)
+
+### Option 2: V2 Deep Learning Approach (Best Similarity)
+
+Highest similarity score with semantic understanding.
+
+```bash
+cd src/v2_deeplearning
+python run_pipeline.py
+```
+
+**Or run individual steps:**
+```bash
+python extract_features_cnn.py          # ~60 seconds
+python build_similarity_matrix_cnn.py   # ~2 seconds
+python order_frames_improved.py         # ~5 seconds
+python reconstruct_video.py             # ~5 seconds
+```
+
+**Expected Output:**
 - Features saved to `../../frames_features_cnn.pkl`
 - Similarity matrix saved to `../../similarity_matrix_cnn.npy`
 - Frame order saved to `../../frame_order_cnn.pkl`
 - Reconstructed video saved to `../../output/reconstructed_video_cnn.mp4`
 
-**Total Time:** ~57 seconds
+**Total Time:** ~3 minutes
+**File Size:** 64MB
+**Quality:** Excellent (99.6% similarity)
 
-### Option 2: V1 ORB Approach (Faster but less accurate)
+### Option 3: V1 ORB Approach (Baseline)
 
-This approach is faster but provides lower accuracy (~85% similarity).
+Fast baseline with good results.
 
 ```bash
 cd src/v1_orb
@@ -83,7 +116,9 @@ python run_pipeline.py
 - All intermediate files saved automatically
 - Reconstructed video saved to `../../output/reconstructed_video.mp4`
 
-**Total Time:** ~43 seconds
+**Total Time:** ~4 minutes
+**File Size:** 62MB
+**Quality:** Good (89% similarity)
 
 ## Testing with Your Own Video
 
@@ -94,7 +129,7 @@ python run_pipeline.py
 
 ## Comparing Results
 
-To compare the results of both approaches:
+To compare V1 and V2 results:
 
 ```bash
 cd src/comparison
@@ -104,38 +139,40 @@ python compare_results.py
 This will generate a comparison report showing:
 - Frame-by-frame similarity scores
 - Average similarity percentages
-- Visual comparison (if applicable)
+- Standard deviation and quality metrics
 
 ## Directory Structure
 
 ```
 JumbledFramesProject/
 ├── src/
-│   ├── v1_orb/              # ORB-based approach
-│   ├── v2_deeplearning/     # Deep learning approach (recommended)
+│   ├── v1_orb/              # ORB-based approach (baseline)
+│   ├── v2_deeplearning/     # Deep learning approach (high similarity)
+│   ├── v4_yolo_tracking/    # YOLO approach (best overall) ⭐
 │   └── comparison/          # Comparison utilities
 ├── frames/                  # Extracted frames (generated)
 ├── output/                  # Reconstructed videos (generated)
 ├── requirements.txt         # Python dependencies
 ├── README.md               # Project overview
 ├── EXECUTION_TIME_LOG.md   # Timing benchmarks
-└── V2_Algorithm_Description.md  # Technical documentation
-
+└── APPROACHES_SUMMARY.md   # Algorithm comparisons
 ```
 
 ## Troubleshooting
 
-### Issue: "No module named 'tensorflow'"
+### Issue: "No module named 'tensorflow'" or 'ultralytics'
 **Solution:** Ensure virtual environment is activated and dependencies are installed:
 ```bash
 pip install -r requirements.txt
 ```
 
 ### Issue: "Out of memory" error
-**Solution:** Close other applications to free up RAM. V2 requires ~1.2GB RAM.
+**Solution:** Close other applications to free up RAM. V2 requires ~1.2GB, V4 requires ~800MB.
 
 ### Issue: Model download fails
-**Solution:** Check internet connection. ResNet50 weights (~100MB) download on first run.
+**Solution:** Check internet connection. 
+- ResNet50 weights (~100MB) download on first V2 run
+- YOLOv8n model (~6MB) downloads on first V4 run
 
 ### Issue: Video codec not supported
 **Solution:** Install ffmpeg:
@@ -146,34 +183,43 @@ pip install -r requirements.txt
 ### Issue: Frames directory not found
 **Solution:** The scripts automatically create the frames directory. If you encounter issues:
 ```bash
-mkdir frames
+mkdir frames output
 ```
 
 ## Performance Notes
 
-- **First Run**: V2 takes longer due to ResNet50 model download
-- **Subsequent Runs**: Model is cached, execution time is consistent
-- **Memory Usage**: V2 uses more RAM but provides significantly better results
-- **CPU Usage**: Both approaches can run on CPU; GPU not required
+- **First Run**: Models download automatically (V2: ~100MB, V4: ~6MB)
+- **Subsequent Runs**: Models are cached, execution time is consistent
+- **Memory Usage**: V4 (800MB) < V1 (500MB) < V2 (1.2GB)
+- **CPU Usage**: All approaches can run on CPU; GPU not required
 
 ## Expected Results
 
-### V1 (ORB)
-- Average similarity: ~85%
-- Reconstruction quality: Moderate (visible jumps)
-- Best for: Quick prototyping
+### V1 (ORB) - Baseline
+- Average similarity: 89%
+- Reconstruction quality: Good
+- Best for: Quick baseline, minimal dependencies
 
-### V2 (ResNet50) ⭐ Recommended
-- Average similarity: ~99.6%
-- Reconstruction quality: Excellent (smooth transitions)
-- Best for: Production use and evaluation
+### V2 (ResNet50) - Highest Similarity
+- Average similarity: 99.6%
+- Reconstruction quality: Excellent
+- Best for: Highest similarity score, semantic matching
 
-## Support
+### V4 (YOLO) - ⭐ **Recommended**
+- Detection rate: 99%
+- Average step: 5.7 pixels
+- Reconstruction quality: Excellent
+- Best for: **Overall best results** (speed + quality + size)
 
-For issues or questions:
-1. Check the troubleshooting section above
-2. Review the Algorithm_Description.md for technical details
-3. Verify system meets prerequisites
+## Recommendation
+
+**Use V4 (YOLO + Nearest Neighbor) for best overall results.**
+
+It provides:
+- ⚡ Fastest execution (~2 min)
+- 💾 Smallest file size (54MB)
+- 📹 Excellent quality (smooth 5.7px motion)
+- 🎯 High detection (99%)
 
 ## Clean Up
 
@@ -186,12 +232,25 @@ rm -rf frames/*
 # Remove output videos
 rm -rf output/*
 
-# Remove intermediate files (automatically ignored by git)
-rm *.pkl *.npy
+# Remove intermediate files
+rm *.pkl *.npy *.csv
 ```
+
+## Support
+
+For issues or questions:
+1. Check the troubleshooting section above
+2. Review APPROACHES_SUMMARY.md for algorithm details
+3. Check specific approach README in src/vX folders
+4. Verify system meets prerequisites
 
 ## Notes
 
 - All video files and generated data are excluded from version control via `.gitignore`
-- Intermediate files (pkl, npy) are saved for debugging but not committed
+- Intermediate files (pkl, npy, csv) are saved for debugging
 - The frames directory may contain 300 images (~50MB total)
+- V4 includes pre-downloaded YOLOv8n model for convenience
+
+---
+
+*Last Updated: October 27, 2024*

@@ -6,3 +6,4 @@ scikit-learn
 matplotlib
 pandas
 ultralytics
+scipy

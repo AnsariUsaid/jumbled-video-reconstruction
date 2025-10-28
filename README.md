@@ -2,21 +2,21 @@
 
 A Python project to reconstruct jumbled video frames using computer vision and graph-based optimization.
 
-**Four approaches implemented:**
+**Five approaches implemented:**
 - **V1 (ORB)**: 89% similarity using ORB features + Hamming distance
 - **V2 (CNN)**: 99.6% similarity using ResNet50 + Cosine similarity
-- **V3 (Distance)**: Person tracking with distance-based ordering
-- **V4 (YOLO)**: 99% detection rate using YOLOv8 + Nearest Neighbor ⭐ **BEST**
+- **V4 (YOLO)**: 99% detection rate using YOLOv8n + Nearest Neighbor
+- **V6 (Hybrid)**: CNN + YOLOv8x spatial refinement ⭐ **BEST** - 3.5px avg step, only 1 jump!
 
 ## 🎬 Demo
 
 ### Before (Jumbled) vs After (Reconstructed)
 
-| Jumbled Video | V1 Reconstructed | V2 Reconstructed | V4 Reconstructed |
-|---------------|------------------|------------------|------------------|
-| Random order | ORB (89% similarity) | CNN (99.6% similarity) | YOLO (5.7px avg step) ⭐ |
-| 🎥 [**Watch**](https://drive.google.com/file/d/1Rzi3UD2sxJbSYcNVARlPqvLbA7PBAKIH/view?usp=sharing) | 🎥 [**Watch V1**](https://drive.google.com/file/d/1s1Cir_J_sommAQWMEaIXUlTXQYM29-Fj/view?usp=sharing) | 🎥 [**Watch V2**](https://drive.google.com/file/d/1neINE83qJeY4Sc_N3AW9jvE_SI8vtXZi/view?usp=sharing) | 🎥 [**Watch V4**](https://drive.google.com/file/d/1ALhd1qUhMGspCIEmxpIiORcFw-T5unA7/view?usp=sharing) |
-| 86MB | 62MB | 64MB | 54MB |
+| Jumbled Video | V1 Reconstructed | V2 Reconstructed | V4 Reconstructed | V6 Reconstructed ⭐ |
+|---------------|------------------|------------------|------------------|---------------------|
+| Random order | ORB (89% similarity) | CNN (99.6% similarity) | YOLO (5.7px avg step) | **Hybrid (3.5px avg step)** ⭐ |
+| 🎥 [**Watch**](https://drive.google.com/file/d/1Rzi3UD2sxJbSYcNVARlPqvLbA7PBAKIH/view?usp=sharing) | 🎥 [**Watch V1**](https://drive.google.com/file/d/1s1Cir_J_sommAQWMEaIXUlTXQYM29-Fj/view?usp=sharing) | 🎥 [**Watch V2**](https://drive.google.com/file/d/1neINE83qJeY4Sc_N3AW9jvE_SI8vtXZi/view?usp=sharing) | 🎥 [**Watch V4**](https://drive.google.com/file/d/1ALhd1qUhMGspCIEmxpIiORcFw-T5unA7/view?usp=sharing) | 🎥 [**Watch V6**](https://drive.google.com/file/d/1w6DSB9zpo0XKdO7z8J8FyX1wa7SJ9h9E/view?usp=sharing) |
+| 86MB | 62MB | 64MB | 54MB | 56MB |
 
 **Video Specifications:**
 - Resolution: 1920×1080 (Full HD)
@@ -26,14 +26,15 @@ A Python project to reconstruct jumbled video frames using computer vision and g
 
 ### Comparison
 
-| Metric | V1 (ORB) | V2 (CNN) | V4 (YOLO) ⭐ | Best |
-|--------|----------|----------|--------------|------|
-| Average Similarity | 445/500 (89.0%) | 995.68/1000 (99.57%) | - | V2 |
-| Detection Rate | - | - | 99% (297/300) | V4 |
-| Avg Step Distance | - | - | 5.7 pixels | V4 |
-| File Size | 62MB | 64MB | 54MB | V4 |
-| Speed | ~4 min | ~3 min | ~2 min | V4 |
-| Visual Quality | Good | Excellent | **Excellent** ⭐ | **V4** |
+| Metric | V1 (ORB) | V2 (CNN) | V4 (YOLO) | V6 (Hybrid) ⭐ | Best |
+|--------|----------|----------|-----------|----------------|------|
+| Average Similarity | 445/500 (89.0%) | 995.68/1000 (99.57%) | - | - | V2 |
+| Detection Rate | - | - | 99% (297/300) | 100% (300/300) | V6 |
+| Avg Step Distance | - | - | 5.7 pixels | **3.5 pixels** | **V6** ⭐ |
+| Jump Rate | - | - | 1.7% (5 jumps) | **0.3% (1 jump)** | **V6** ⭐ |
+| File Size | 62MB | 64MB | 54MB | 56MB | V4 |
+| Speed | ~4 min | ~3 min | ~2 min | ~4 min | V4 |
+| Visual Quality | Good | Excellent | Excellent | **Near-Perfect** ⭐ | **V6** |
 
 ---
 
@@ -57,21 +58,31 @@ A Python project to reconstruct jumbled video frames using computer vision and g
 
 **Results:** 99.6% average consecutive frame similarity (+10.57% improvement)
 
-### V4: YOLO Object Detection + Nearest Neighbor ⭐ **RECOMMENDED**
-1. Detect person in each frame using YOLOv8 (99% detection rate)
+### V4: YOLO Object Detection + Nearest Neighbor
+1. Detect person in each frame using YOLOv8n (99% detection rate)
 2. Track person centroid position (x, y) across frames
 3. Start from bottom-right corner, greedily select nearest unvisited frame
 4. Build smooth path with average 5.7 pixel displacement between frames
 
 **Results:** Excellent visual quality with smooth transitions, fastest execution (~2 min)
 
-**Why V4 is Best:**
-- ✅ Direct spatial tracking (uses actual person position, not image features)
-- ✅ Fastest execution time (~2 minutes vs 3-4 minutes)
-- ✅ Smallest file size (54MB vs 62-64MB)
-- ✅ Very smooth motion (5.7px average step)
-- ✅ Simple and interpretable algorithm
-- ✅ Robust to lighting and background changes
+### V6: Hybrid CNN + YOLOv8x ⭐ **RECOMMENDED - BEST RESULTS**
+1. **Stage 1 (Semantic):** Use V2 CNN approach to get initial semantic ordering
+2. **Stage 2 (Spatial):** Apply YOLOv8x to extract precise person centroids
+3. **Stage 3 (Refinement):** Re-order frames using nearest-neighbor on spatial positions
+4. **Result:** Best of both worlds - semantic understanding + spatial precision
+
+**🎥 [Watch V6 Result](https://drive.google.com/file/d/1w6DSB9zpo0XKdO7z8J8FyX1wa7SJ9h9E/view?usp=sharing)** - Near-perfect smooth motion!
+
+**Results:** Near-perfect reconstruction with 3.5px avg step, only 1 jump in 300 frames!
+
+**Why V6 is Best:**
+- ✅ **Lowest motion jitter** (3.5px vs 5.7px in V4) - 38% improvement!
+- ✅ **Fewest jumps** (1 jump vs 5 in V4) - 80% reduction!
+- ✅ **100% frame coverage** (300/300 frames vs 297/300)
+- ✅ **Near-perfect visual quality** - smoothest transitions
+- ✅ **Robust hybrid approach** - combines semantic + spatial understanding
+- ✅ **Uses YOLOv8x** - more accurate person detection than YOLOv8n
 
 ---
 - ✅ 62MB reconstructed video (1920×1080, 30 FPS)
@@ -99,21 +110,27 @@ JumbledFramesProject/
  │   │   ├── reconstruct_video.py         # Rebuild video
  │   │   └── run_pipeline.py              # Run complete V2 pipeline
  │   │
- │   ├── v4_yolo_tracking/                # V4: YOLO + Nearest Neighbor ⭐ BEST
- │   │   ├── 1_extract_tracking_data.py   # YOLOv8 person detection
+ │   ├── v4_yolo_tracking/                # V4: YOLO + Nearest Neighbor
+ │   │   ├── 1_extract_tracking_data.py   # YOLOv8n person detection
  │   │   ├── 2_compute_frame_order.py     # Nearest neighbor ordering
  │   │   ├── 3_reconstruct_video.py       # Video reconstruction
- │   │   ├── run_pipeline.py              # Run complete V4 pipeline ⭐
+ │   │   ├── run_pipeline.py              # Run complete V4 pipeline
  │   │   └── README.md                    # V4 documentation
  │   │
- │   └── comparison/                      # Compare approaches
- │       └── compare_results.py
+ │   └── v6_hybrid_yolov8x/               # V6: Hybrid CNN + YOLOv8x ⭐ BEST
+ │       ├── 1_run_v2_cnn.py              # Stage 1: CNN semantic ordering
+ │       ├── 2_apply_yolov8x_refinement.py # Stage 2: YOLOv8x detection
+ │       ├── 3_spatial_reorder.py         # Stage 3: Spatial reordering
+ │       ├── 4_reconstruct_v6.py          # Final video reconstruction
+ │       ├── run_pipeline.py              # Run complete V6 pipeline ⭐
+ │       └── yolov8x.pt                   # YOLOv8x model weights
  │
  ├── frames/                              # Extracted frames (300 .jpg)
  ├── output/
  │   ├── reconstructed_video.mp4          # V1 output (62MB, 89%)
  │   ├── reconstructed_video_cnn.mp4      # V2 output (64MB, 99.6%)
- │   └── reconstructed_video_v4.mp4       # V4 output (54MB) ⭐ BEST
+ │   ├── reconstructed_video_v4.mp4       # V4 output (54MB)
+ │   └── reconstructed_video_v6.mp4       # V6 output (56MB) ⭐ BEST
  │
  ├── Algorithm_Description.md             # V1 algorithm documentation
  ├── V2_Algorithm_Description.md          # V2 algorithm documentation
@@ -154,10 +171,16 @@ scikit-learn
 matplotlib
 ```
 
-### V4 (YOLO Approach) - Additional ⭐
+### V4 (YOLO Approach) - Additional
 ```
 ultralytics
 pandas
+```
+
+### V6 (Hybrid Approach) - Best Results ⭐
+```
+All V2 dependencies (tensorflow, scikit-learn)
+All V4 dependencies (ultralytics, pandas)
 ```
 
 Install all dependencies:
@@ -167,7 +190,34 @@ pip install -r requirements.txt
 
 ## 🚀 Quick Start
 
-### Option 1: Run V4 (YOLO) - Best Overall ⭐ **RECOMMENDED**
+### Option 1: Run V6 (Hybrid) - Best Results ⭐ **RECOMMENDED**
+
+```bash
+source venv/bin/activate
+cd src/v6_hybrid_yolov8x
+
+# Run complete V6 pipeline (one command)
+python run_pipeline.py                   # ~4 minutes total
+
+# Output: output/reconstructed_video_v6.mp4
+```
+
+**Or run individual steps:**
+```bash
+python 1_run_v2_cnn.py                   # ~2 minutes - CNN semantic ordering
+python 2_apply_yolov8x_refinement.py     # ~90 seconds - YOLOv8x detection
+python 3_spatial_reorder.py              # ~5 seconds - Spatial reordering
+python 4_reconstruct_v6.py               # ~10 seconds - Video creation
+```
+
+**Why V6?**
+- 🏆 **Best visual quality** - near-perfect smooth motion
+- 🎯 **Most accurate** - 3.5px avg step (38% better than V4)
+- 📉 **Fewest jumps** - only 1 jump in 300 frames (80% reduction)
+- 💯 **100% coverage** - all 300 frames included
+- 🧠 **Hybrid intelligence** - combines semantic + spatial understanding
+
+### Option 2: Run V4 (YOLO) - Fastest Execution
 
 ```bash
 source venv/bin/activate
@@ -187,12 +237,12 @@ python 3_reconstruct_video.py           # ~10 seconds - Video creation
 ```
 
 **Why V4?**
-- ⚡ Fastest execution (~2 minutes)
-- 🎯 Most accurate person tracking (99% detection)
+- ⚡ **Fastest execution** (~2 minutes)
+- 🎯 Accurate person tracking (99% detection)
 - 📹 Excellent visual quality (5.7px avg motion)
 - 💾 Smallest file size (54MB)
 
-### Option 2: Run V2 (CNN) - Best Similarity Score
+### Option 3: Run V2 (CNN) - Best Similarity Score
 
 ```bash
 source venv/bin/activate
@@ -372,10 +422,37 @@ After running the complete pipeline:
 ### File Structure After Execution
 ```
 output/
-└── reconstructed_video.mp4    # The reconstructed video - ready to play!
+├── reconstructed_video.mp4        # V1 output (ORB approach)
+├── reconstructed_video_cnn.mp4    # V2 output (CNN approach)
+├── reconstructed_video_v4.mp4     # V4 output (YOLO approach)
+└── reconstructed_video_v6.mp4     # V6 output (Hybrid) ⭐ BEST
 ```
 
-**To view the result:** Open `output/reconstructed_video.mp4` in any video player (VLC, QuickTime, Windows Media Player, etc.)
+**To view the result:** Open `output/reconstructed_video_v6.mp4` in any video player (VLC, QuickTime, Windows Media Player, etc.)
+
+### 📝 Note on Excluded Files
+
+The following files are **not included** in the Git repository due to their large size:
+
+**Large Model Files:**
+- `yolov8n.pt` (~6 MB) - YOLOv8 nano model weights
+- `yolov8x.pt` (~136 MB) - YOLOv8 extra-large model weights
+
+**Large Data Files:**
+- `jumbled_video.mp4` (~90 MB) - Original jumbled input video
+- `output/reconstructed_video*.mp4` (54-64 MB each) - Reconstructed videos
+- `frames/` folder (~300 MB) - 300 extracted frame images
+
+**Why Excluded:**
+- **Size limitations:** GitHub has file size limits and repository size best practices
+- **Auto-generated:** Most of these files are automatically downloaded or generated during pipeline execution
+- **Accessibility:** Videos and results are shared via Google Drive links (see demo section)
+- **Reproducibility:** You can reproduce all outputs by running the pipelines
+
+**How to Get These Files:**
+1. **Model weights:** Auto-downloaded by ultralytics when you run YOLO code
+2. **Videos:** Available via Google Drive links in the demo section above
+3. **Generated files:** Created when you run the respective pipeline scripts
 
 ---
 

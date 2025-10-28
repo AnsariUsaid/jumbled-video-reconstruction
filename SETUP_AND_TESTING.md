@@ -129,17 +129,13 @@ python run_pipeline.py
 
 ## Comparing Results
 
-To compare V1 and V2 results:
+All three approaches can be compared by viewing their output videos:
 
-```bash
-cd src/comparison
-python compare_results.py
-```
+**V1 (ORB)**: `output/reconstructed_video.mp4` (62MB, 89% similarity)
+**V2 (CNN)**: `output/reconstructed_video_cnn.mp4` (64MB, 99.6% similarity)  
+**V4 (YOLO)**: `output/reconstructed_video_v4.mp4` (54MB, 5.7px avg step) ⭐
 
-This will generate a comparison report showing:
-- Frame-by-frame similarity scores
-- Average similarity percentages
-- Standard deviation and quality metrics
+You can view them side-by-side manually or use video players to compare quality.
 
 ## Directory Structure
 
@@ -148,8 +144,7 @@ JumbledFramesProject/
 ├── src/
 │   ├── v1_orb/              # ORB-based approach (baseline)
 │   ├── v2_deeplearning/     # Deep learning approach (high similarity)
-│   ├── v4_yolo_tracking/    # YOLO approach (best overall) ⭐
-│   └── comparison/          # Comparison utilities
+│   └── v4_yolo_tracking/    # YOLO approach (best overall) ⭐
 ├── frames/                  # Extracted frames (generated)
 ├── output/                  # Reconstructed videos (generated)
 ├── requirements.txt         # Python dependencies

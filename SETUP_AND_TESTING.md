@@ -1,5 +1,11 @@
 # Setup and Testing Instructions
 
+## Main Approach: V6 Hybrid (Recommended) ⭐
+
+**This project uses the V6 Hybrid approach as the primary solution for video frame reconstruction.** V6 combines CNN semantic understanding with YOLOv8x spatial precision to achieve near-perfect results with 100% detection rate and only 3.5px average step distance.
+
+> **Note:** Other approaches (V1, V2, V4) are preserved for reference and educational purposes, but they are **not accurate or recommended** for production use. They were explored during development but did not achieve the quality and precision of V6.
+
 ## Prerequisites
 
 - Python 3.8 or higher
@@ -41,133 +47,192 @@ pip install -r requirements.txt
 ```
 
 **Dependencies include:**
-- opencv-python (image processing)
+- opencv-python (video and image processing)
 - numpy (numerical computations)
-- tensorflow (V2: deep learning)
+- tensorflow (ResNet50 CNN for semantic understanding)
 - scikit-learn (similarity metrics)
-- ultralytics (V4: YOLO detection)
-- pandas (V4: data handling)
+- ultralytics (YOLOv8x object detection)
+- pandas (data tracking and analysis)
 - tqdm (progress bars)
 
-## Running the Code
+---
 
-### Option 1: V4 YOLO Approach (⭐ Recommended - Best Overall)
+## Running V6 Hybrid Pipeline (⭐ Recommended)
 
-This is the **best-performing solution** with fastest execution and excellent quality.
+This is the **main and recommended approach** with near-perfect reconstruction quality.
+
+### Quick Start - Complete Pipeline
 
 ```bash
-cd src/v4_yolo_tracking
+# Activate virtual environment
+source venv/bin/activate
+
+# Navigate to V6 directory
+cd src/v6_hybrid_yolov8x
+
+# Run complete pipeline
 python run_pipeline.py
 ```
 
-**Or run individual steps:**
-```bash
-python 1_extract_tracking_data.py      # ~60 seconds
-python 2_compute_frame_order.py         # ~5 seconds
-python 3_reconstruct_video.py           # ~10 seconds
-```
-
 **Expected Output:**
-- Tracking data saved to `../../frame_tracking_data.csv`
-- Frame order saved to `../../correct_frame_order.csv`
-- Reconstructed video saved to `../../output/reconstructed_video_v4.mp4`
+- Stage 1: CNN semantic ordering (~2 minutes)
+- Stage 2: YOLOv8x person detection (~90 seconds)
+- Stage 3: Spatial re-ordering (~5 seconds)
+- Stage 4: Video reconstruction (~10 seconds)
+- Final video: `output/reconstructed_video_v6.mp4` (63MB)
 
-**Total Time:** ~2 minutes
-**File Size:** 54MB
-**Quality:** Excellent (5.7px avg step, 99% detection)
+**Total Time:** ~4 minutes  
+**Quality:** Near-Perfect (3.5px avg step, 100% detection, 0.3% jump rate)
 
-### Option 2: V2 Deep Learning Approach (Best Similarity)
+### Run Individual Steps (Optional)
 
-Highest similarity score with semantic understanding.
+For debugging or inspecting intermediate outputs:
 
 ```bash
-cd src/v2_deeplearning
-python run_pipeline.py
+cd src/v6_hybrid_yolov8x
+
+# Step 1: CNN Semantic Ordering
+python 1_run_v2_cnn.py
+# Output: output/reconstructed_video_cnn.mp4
+# Creates: frames_features_cnn.pkl, similarity_matrix_cnn.npy
+
+# Step 2: YOLOv8x Detection
+python 2_apply_yolov8x_refinement.py
+# Output: frame_tracking_v6_hybrid.csv (300 rows)
+
+# Step 3: Spatial Re-ordering
+python 3_spatial_reorder.py
+# Output: correct_frame_order_v6.csv
+# Shows: Detection rate, avg step distance, jump statistics
+
+# Step 4: Video Reconstruction
+python 4_reconstruct_v6.py
+# Output: output/reconstructed_video_v6.mp4 (final result)
 ```
 
-**Or run individual steps:**
-```bash
-python extract_features_cnn.py          # ~60 seconds
-python build_similarity_matrix_cnn.py   # ~2 seconds
-python order_frames_improved.py         # ~5 seconds
-python reconstruct_video.py             # ~5 seconds
+### Expected Results
+
+**V6 Hybrid Performance:**
+```
+Detection Rate:       100% (300/300 frames)
+Avg Step Distance:    3.5 pixels
+Min Step:            0.2 pixels
+Max Step:            87.5 pixels
+Large Jumps (>30px):  1/299 (0.3%)
+Total Path Length:    1054.3 pixels
+Visual Quality:       Near-Perfect smooth motion
 ```
 
-**Expected Output:**
-- Features saved to `../../frames_features_cnn.pkl`
-- Similarity matrix saved to `../../similarity_matrix_cnn.npy`
-- Frame order saved to `../../frame_order_cnn.pkl`
-- Reconstructed video saved to `../../output/reconstructed_video_cnn.mp4`
+---
 
-**Total Time:** ~3 minutes
-**File Size:** 64MB
-**Quality:** Excellent (99.6% similarity)
+## Alternative Approaches (Not Recommended)
 
-### Option 3: V1 ORB Approach (Baseline)
+> ⚠️ **Important:** The following approaches (V1, V2, V4) are **experimental and not accurate**. They were explored during the development process but did not achieve the required quality standards. **Use V6 Hybrid for reliable results.**
 
-Fast baseline with good results.
+### Why Other Approaches Are Not Recommended:
 
+- **V1 (ORB)**: Only 89% similarity, lacks semantic understanding, misses context
+- **V2 (CNN)**: Good similarity but no person tracking, not optimized for motion
+- **V4 (YOLOv8n)**: Missing 3 frames (99% vs 100%), larger jumps (5.7px vs 3.5px)
+
+### If You Still Want to Explore Them:
+
+**V1 - ORB Features (Not Accurate)**
 ```bash
 cd src/v1_orb
 python run_pipeline.py
+# Output: output/reconstructed_video.mp4
+# Quality: Poor (89% similarity, not reliable)
 ```
 
-**Expected Output:**
-- All intermediate files saved automatically
-- Reconstructed video saved to `../../output/reconstructed_video.mp4`
+**V2 - CNN Features (Not Accurate)**
+```bash
+cd src/v2_deeplearning
+python run_pipeline.py
+# Output: output/reconstructed_video_cnn.mp4
+# Quality: Moderate (99.6% similarity but no motion tracking)
+```
 
-**Total Time:** ~4 minutes
-**File Size:** 62MB
-**Quality:** Good (89% similarity)
+**V4 - YOLOv8n (Not Accurate)**
+```bash
+cd src/v4_yolo_tracking
+python run_pipeline.py
+# Output: output/reconstructed_video_v4.mp4
+# Quality: Good but inferior to V6 (missing frames, larger jumps)
+```
+
+**Again: These are NOT recommended. Use V6 Hybrid for accurate results.**
+
+---
 
 ## Testing with Your Own Video
 
 1. Place your jumbled video in the project root directory
 2. Rename it to `jumbled_video.mp4` (or update the path in the scripts)
-3. Run the appropriate approach as described above
-4. Find the reconstructed video in the `output/` directory
+3. Run the V6 Hybrid pipeline as described above
+4. Find the reconstructed video in `output/reconstructed_video_v6.mp4`
 
-## Comparing Results
+**Note:** V6 Hybrid is optimized for videos with a person/subject moving through frames. For other types of content, results may vary.
 
-All three approaches can be compared by viewing their output videos:
-
-**V1 (ORB)**: `output/reconstructed_video.mp4` (62MB, 89% similarity)
-**V2 (CNN)**: `output/reconstructed_video_cnn.mp4` (64MB, 99.6% similarity)  
-**V4 (YOLO)**: `output/reconstructed_video_v4.mp4` (54MB, 5.7px avg step) ⭐
-
-You can view them side-by-side manually or use video players to compare quality.
+---
 
 ## Directory Structure
 
 ```
 JumbledFramesProject/
 ├── src/
-│   ├── v1_orb/              # ORB-based approach (baseline)
-│   ├── v2_deeplearning/     # Deep learning approach (high similarity)
-│   └── v4_yolo_tracking/    # YOLO approach (best overall) ⭐
-├── frames/                  # Extracted frames (generated)
-├── output/                  # Reconstructed videos (generated)
-├── requirements.txt         # Python dependencies
-├── README.md               # Project overview
-├── EXECUTION_TIME_LOG.md   # Timing benchmarks
-└── APPROACHES_SUMMARY.md   # Algorithm comparisons
+│   ├── v6_hybrid_yolov8x/       # ⭐ V6 Hybrid (RECOMMENDED)
+│   ├── v1_orb/                  # Explored approach (not accurate)
+│   ├── v2_deeplearning/         # Explored approach (not accurate)
+│   └── v4_yolo_tracking/        # Explored approach (not accurate)
+├── frames/                      # Extracted frames (generated)
+├── output/
+│   └── reconstructed_video_v6.mp4  # ⭐ Final V6 output (generated)
+├── frame_tracking_v6_hybrid.csv    # Person tracking data (generated)
+├── correct_frame_order_v6.csv      # Optimized frame order (generated)
+├── requirements.txt             # Python dependencies
+├── README.md                    # Main project documentation
+├── SETUP_AND_TESTING.md         # This file
+├── EXECUTION_TIME_LOG.md        # Performance benchmarks
+└── APPROACHES_SUMMARY.md        # Algorithm comparisons
 ```
+
+---
+
+## Performance Notes
+
+### V6 Hybrid
+- **First Run**: YOLOv8x model (~136MB) and ResNet50 (~100MB) download automatically
+- **Subsequent Runs**: Models are cached, consistent ~4 minute execution
+- **Memory Usage**: ~1.5GB RAM recommended
+- **CPU/GPU**: Works on CPU; GPU optional but speeds up YOLO detection
+- **Storage**: Final video is 63MB, intermediate files ~300MB
+
+### Other Approaches (Not Recommended)
+- Execution times vary (2-4 minutes)
+- Lower quality results
+- Not suitable for production use
+
+---
 
 ## Troubleshooting
 
 ### Issue: "No module named 'tensorflow'" or 'ultralytics'
 **Solution:** Ensure virtual environment is activated and dependencies are installed:
 ```bash
+source venv/bin/activate  # or venv\Scripts\activate on Windows
 pip install -r requirements.txt
 ```
 
 ### Issue: "Out of memory" error
-**Solution:** Close other applications to free up RAM. V2 requires ~1.2GB, V4 requires ~800MB.
+**Solution:** V6 requires ~1.5GB RAM. Close other applications to free up memory.
 
-### Issue: Model download fails
-**Solution:** Check internet connection. 
-- ResNet50 weights (~100MB) download on first V2 run
-- YOLOv8n model (~6MB) downloads on first V4 run
+### Issue: Model download fails (YOLOv8x or ResNet50)
+**Solution:** 
+- Check internet connection
+- YOLOv8x (~136MB) downloads on first run
+- ResNet50 (~100MB) downloads on first run
+- Models are cached in `~/.cache/` for subsequent runs
 
 ### Issue: Video codec not supported
 **Solution:** Install ffmpeg:
@@ -176,52 +241,74 @@ pip install -r requirements.txt
 - **Windows:** Download from https://ffmpeg.org/
 
 ### Issue: Frames directory not found
-**Solution:** The scripts automatically create the frames directory. If you encounter issues:
+**Solution:** The V6 pipeline automatically extracts frames. If issues occur:
 ```bash
 mkdir frames output
 ```
 
-## Performance Notes
+---
 
-- **First Run**: Models download automatically (V2: ~100MB, V4: ~6MB)
-- **Subsequent Runs**: Models are cached, execution time is consistent
-- **Memory Usage**: V4 (800MB) < V1 (500MB) < V2 (1.2GB)
-- **CPU Usage**: All approaches can run on CPU; GPU not required
+## Expected Results - V6 Hybrid
 
-## Expected Results
+When you run the V6 Hybrid pipeline successfully, you should see:
 
-### V1 (ORB) - Baseline
-- Average similarity: 89%
-- Reconstruction quality: Good
-- Best for: Quick baseline, minimal dependencies
+**Console Output:**
+```
+================================================================================
+V6 HYBRID - STEP 3: SPATIAL RE-ORDERING
+================================================================================
 
-### V2 (ResNet50) - Highest Similarity
-- Average similarity: 99.6%
-- Reconstruction quality: Excellent
-- Best for: Highest similarity score, semantic matching
+Loading V2 tracking data (YOLOv8x): frame_tracking_v6_hybrid.csv
+✓ Loaded 300 frames
 
-### V4 (YOLO) - ⭐ **Recommended**
-- Detection rate: 99%
-- Average step: 5.7 pixels
-- Reconstruction quality: Excellent
-- Best for: **Overall best results** (speed + quality + size)
+Finding starting frame (closest to bottom-right)...
+✓ Starting frame: 64
+  Position: (1585.4, 737.4)
 
-## Recommendation
+Ordering frames: 100%|████████████████████| 299/299 [00:00<00:00]
 
-**Use V4 (YOLO + Nearest Neighbor) for best overall results.**
+================================================================================
+V6 HYBRID SPATIAL ORDERING COMPLETE
+================================================================================
+✓ Ordered 300 frames
+✓ Total path distance: 1054.3 pixels
+✓ Average step distance: 3.5 pixels
+✓ Min step: 0.2 pixels
+✓ Max step: 87.5 pixels
+✓ Large jumps (>30px): 1/299 (0.3%)
+✓ Saved frame order to: correct_frame_order_v6.csv
+```
 
-It provides:
-- ⚡ Fastest execution (~2 min)
-- 💾 Smallest file size (54MB)
-- 📹 Excellent quality (smooth 5.7px motion)
-- 🎯 High detection (99%)
+**Generated Files:**
+- `output/reconstructed_video_v6.mp4` (63MB) - Final video
+- `frame_tracking_v6_hybrid.csv` - Person tracking data
+- `correct_frame_order_v6.csv` - Optimized frame sequence
+- `frames/` directory with 300 JPG files
+- `frames_features_cnn.pkl` - CNN features
+- `similarity_matrix_cnn.npy` - Similarity matrix
+
+---
+
+## Comparison: Why V6 is Superior
+
+| Metric | V1 (ORB) | V2 (CNN) | V4 (YOLOv8n) | V6 (Hybrid) ⭐ |
+|--------|----------|----------|--------------|----------------|
+| Detection Rate | N/A | N/A | 99% (297/300) | **100% (300/300)** |
+| Avg Step Distance | N/A | N/A | 5.7px | **3.5px** |
+| Jump Rate | N/A | N/A | 1.7% (5 jumps) | **0.3% (1 jump)** |
+| Visual Quality | Poor | Moderate | Good | **Near-Perfect** |
+| Accuracy | ❌ Not Accurate | ❌ Not Accurate | ❌ Not Accurate | ✅ **Accurate** |
+
+**Recommendation: Always use V6 Hybrid for production-quality results.**
+
+---
 
 ## Clean Up
 
-To remove generated files:
+To remove generated files and start fresh:
 
 ```bash
-# Remove frames
+# Remove extracted frames
 rm -rf frames/*
 
 # Remove output videos
@@ -229,23 +316,39 @@ rm -rf output/*
 
 # Remove intermediate files
 rm *.pkl *.npy *.csv
+
+# Keep only source code and documentation
 ```
 
-## Support
-
-For issues or questions:
-1. Check the troubleshooting section above
-2. Review APPROACHES_SUMMARY.md for algorithm details
-3. Check specific approach README in src/vX folders
-4. Verify system meets prerequisites
-
-## Notes
-
-- All video files and generated data are excluded from version control via `.gitignore`
-- Intermediate files (pkl, npy, csv) are saved for debugging
-- The frames directory may contain 300 images (~50MB total)
-- V4 includes pre-downloaded YOLOv8n model for convenience
+**Note:** The V6 pipeline will regenerate all necessary files when run again.
 
 ---
 
-*Last Updated: October 27, 2024*
+## Support
+
+If you encounter issues:
+
+1. **Check Prerequisites**: Ensure Python 3.8+, sufficient RAM, and internet connection
+2. **Verify Installation**: Make sure virtual environment is activated and all dependencies installed
+3. **Review Documentation**: 
+   - README.md for project overview
+   - APPROACHES_SUMMARY.md for algorithm details
+   - EXECUTION_TIME_LOG.md for performance benchmarks
+4. **Use V6 Only**: Avoid V1, V2, V4 as they are not accurate
+
+---
+
+## Important Notes
+
+- **Use V6 Hybrid exclusively** - It's the only accurate approach
+- V1, V2, V4 are preserved for educational/reference purposes only
+- All video files are excluded from version control via `.gitignore`
+- Intermediate files (pkl, npy, csv) are saved for debugging
+- The frames directory contains 300 images (~300MB total)
+- YOLOv8x and ResNet50 models auto-download and cache locally
+- Generated videos are high quality (1920×1080, 30 FPS)
+
+---
+
+*Last Updated: October 29, 2024*
+*Main Approach: V6 Hybrid (CNN + YOLOv8x) - Near-Perfect Reconstruction*

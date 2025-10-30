@@ -13,9 +13,9 @@ A Python project to reconstruct jumbled video frames using a hybrid approach com
 **Quick Navigation:**
 - **This File (README.md)** - Complete V6 technical guide, how it works, and quick start
 - **[SETUP_AND_TESTING.md](SETUP_AND_TESTING.md)** - Installation and execution instructions
-- **[APPROACHES_SUMMARY.md](APPROACHES_SUMMARY.md)** - All approaches explored (V1-V7) and why V6 is best
-- **[UTILITIES.md](UTILITIES.md)** - Logger documentation and file organization
-- **[EXECUTION_TIME_LOG.md](EXECUTION_TIME_LOG.md)** - Historical benchmark data and timings
+- **[ApproachesTried.md](ApproachesTried.md)** - All approaches explored (V1-V7) and why V6 is best
+- **[EXECUTION_TIME_LOG.md](EXECUTION_TIME_LOG.md)** - Performance benchmarks and execution logging
+- **[CHECKLIST.md](CHECKLIST.md)** - Project development checklist
 
 **First time here?** Continue reading below for complete V6 documentation. For setup instructions, see [SETUP_AND_TESTING.md](SETUP_AND_TESTING.md).
 
@@ -29,7 +29,6 @@ A Python project to reconstruct jumbled video frames using a hybrid approach com
 |------------------------|----------------------------|
 | 300 frames in random order | Near-perfect smooth reconstruction |
 | 🎥 [**Watch Jumbled**](https://drive.google.com/file/d/1Rzi3UD2sxJbSYcNVARlPqvLbA7PBAKIH/view?usp=sharing) | 🎥 [**Watch V6 Result**](https://drive.google.com/file/d/1w6DSB9zpo0XKdO7z8J8FyX1wa7SJ9h9E/view?usp=sharing) |
-| 86MB | 63MB |
 
 **Video Specifications:**
 - Resolution: 1920×1080 (Full HD)
@@ -241,13 +240,13 @@ Or watch online: 🎥 [**V6 Result on Google Drive**](https://drive.google.com/f
 ```
 JumbledFramesProject/
 ├── src/
-│   ├── v6_hybrid_yolov8x/              # ⭐ V6 Hybrid (RECOMMENDED)
+│   ├── v6_hybrid_yolov8x/              #  V6 Hybrid (RECOMMENDED)
 │   │   ├── 1_run_v2_cnn.py              # Stage 1: CNN semantic ordering
 │   │   ├── 2_apply_yolov8x_refinement.py # Stage 2: YOLOv8x detection
 │   │   ├── 3_spatial_reorder.py         # Stage 3: Spatial optimization
 │   │   ├── 4_reconstruct_v6.py          # Stage 4: Video reconstruction
 │   │   ├── run_pipeline.py              # Complete automated pipeline
-│   │   ├── logger.py                    # ⭐ V6 execution logger (NEW!)
+│   │   ├── logger.py                    # V6 execution logger
 │   │   └── yolov8x.pt                   # YOLOv8x model (auto-downloaded)
 │   │
 │   ├── v1_orb/                          # Explored Approach (not accurate)
@@ -256,18 +255,18 @@ JumbledFramesProject/
 │
 ├── frames/                              # 300 extracted JPG frames
 ├── output/
-│   └── reconstructed_video_v6.mp4       # ⭐ Final V6 output (63MB)
+│   └── reconstructed_video_v6.mp4       # Final V6 output
 │
-├── jumbled_video.mp4                    # Original jumbled input (90MB)
+├── jumbled_video.mp4                    # Original jumbled input
 ├── frame_tracking_v6_hybrid.csv         # Person tracking data (300 frames)
 ├── correct_frame_order_v6.csv           # Optimized frame sequence
-├── execution_log_v6.txt                 # ⭐ V6 pipeline execution log (NEW!)
+├── execution_log_v6.txt                 # V6 pipeline execution log 
 ├── requirements.txt                     # Python dependencies
 ├── README.md                            # This file
 ├── SETUP_AND_TESTING.md                 # Setup and testing guide
-├── UTILITIES.md                         # Utility files documentation
-├── APPROACHES_SUMMARY.md                # Comparison of all approaches
-└── EXECUTION_TIME_LOG.md                # Performance benchmarks
+├── ApproachesTried.md                   # Comparison of all approaches
+├── EXECUTION_TIME_LOG.md                # Performance benchmarks
+└── CHECKLIST.md                         # Project development checklist
 ```
 
 ### Key V6 Components
@@ -278,7 +277,7 @@ JumbledFramesProject/
 - `2_apply_yolov8x_refinement.py` - Stage 2: YOLOv8x person detection
 - `3_spatial_reorder.py` - Stage 3: Spatial nearest-neighbor optimization
 - `4_reconstruct_v6.py` - Stage 4: Video reconstruction
-- `logger.py` - ⭐ V6 execution tracker with performance metrics
+- `logger.py` - V6 execution tracker with performance metrics
 
 **V6 Models:**
 - `yolov8x.pt` (136MB) - YOLOv8 extra-large model (auto-downloads on first run)
@@ -321,17 +320,10 @@ JumbledFramesProject/
    - Final optimized frame sequence
    - Used to reconstruct the video
 
-6. **output/reconstructed_video_v6.mp4** (63MB) ⭐
+6. **output/reconstructed_video_v6.mp4** ⭐
    - Final reconstructed video
    - 1920×1080, 30 FPS, 10 seconds
    - Near-perfect smooth motion
-
-7. **execution_log_v6.txt** (~5KB) ⭐ NEW!
-   - Complete V6 pipeline execution log
-   - Stage-by-stage timing breakdown
-   - Performance metrics summary
-   - Detection rate, step distance, jump count
-   - Useful for debugging and performance analysis
 
 ---
 
@@ -470,71 +462,23 @@ distance = sqrt((x2 - x1)² + (y2 - y1)²)
 - ✅ **Stability**: -80% fewer jumps (1 vs 5)
 - ✅ **Quality**: Visibly smoother motion
 
-### V6 Execution Logger
-
-The V6 pipeline includes a comprehensive execution logger that tracks timing and performance metrics for each stage. Logs are saved to `execution_log_v6.txt` for debugging and analysis.
-
-See **[UTILITIES.md](UTILITIES.md)** for complete logger documentation.
-
 ---
 
 ## 📖 Additional Documentation
 
 ### Full Project Documentation
-- **[APPROACHES_SUMMARY.md](APPROACHES_SUMMARY.md)** - Comparison of all approaches (V1-V7)
+- **[ApproachesTried.md](ApproachesTried.md)** - Comparison of all approaches (V1-V7)
 - **[SETUP_AND_TESTING.md](SETUP_AND_TESTING.md)** - Detailed setup and testing guide
-- **[EXECUTION_TIME_LOG.md](EXECUTION_TIME_LOG.md)** - Performance benchmarks
-- **[UTILITIES.md](UTILITIES.md)** - Utility files explained
-
-### Approach-Specific Documentation
-- **[Algorithm_Description.md](Algorithm_Description.md)** - V1 ORB approach details
-- **[V2_Algorithm_Description.md](V2_Algorithm_Description.md)** - V2 CNN approach analysis
-- **[src/v4_yolo_tracking/README.md](src/v4_yolo_tracking/README.md)** - V4 YOLO documentation
+- **[EXECUTION_TIME_LOG.md](EXECUTION_TIME_LOG.md)** - Performance benchmarks and execution logging
+- **[CHECKLIST.md](CHECKLIST.md)** - Project development checklist
 
 ---
 
 ## 🔬 Alternative Approaches Explored
 
-This project demonstrates iterative improvement through multiple approaches. While V6 Hybrid is our best solution, we explored several other methods:
+This project demonstrates iterative improvement through multiple approaches. While V6 Hybrid is our best solution, we explored several other methods (V1-V7).
 
-### V1: ORB Features + Hamming Distance
-- **Method**: ORB keypoint matching with graph-based ordering
-- **Results**: 89% similarity, good baseline
-- **Pros**: Fast, simple, no deep learning required
-- **Cons**: Only local features, misses semantic context
-
-### V2: CNN Features + Cosine Similarity  
-- **Method**: ResNet50 deep features with similarity matrix
-- **Results**: 99.6% similarity, excellent semantic ordering
-- **Pros**: Understands scene context, very high similarity
-- **Cons**: No explicit person tracking, computationally expensive
-
-### V4: YOLOv8n + Nearest Neighbor
-- **Method**: Direct person tracking with spatial optimization
-- **Results**: 99% detection (297/300), 5.7px avg step
-- **Pros**: Fast (~2 min), direct object tracking, smallest file
-- **Cons**: Misses 3 frames, slightly larger jumps than V6
-
-### V6: Hybrid CNN + YOLOv8x ⭐ **BEST**
-- **Method**: CNN semantic ordering + YOLOv8x spatial refinement
-- **Results**: 100% detection, 3.5px avg step, 0.3% jump rate
-- **Pros**: Best of all worlds - semantic + spatial intelligence
-- **Cons**: Slower execution (~4 min), higher complexity
-
-### Comparison Table
-
-| Metric | V1 (ORB) | V2 (CNN) | V4 (YOLOv8n) | V6 (Hybrid) ⭐ | Winner |
-|--------|----------|----------|--------------|----------------|--------|
-| **Detection Rate** | N/A | N/A | 99% (297/300) | **100% (300/300)** | **V6** |
-| **Avg Similarity** | 89.0% | **99.6%** | N/A | N/A | V2 |
-| **Avg Step Distance** | N/A | N/A | 5.7px | **3.5px** | **V6** |
-| **Jump Rate** | N/A | N/A | 1.7% (5 jumps) | **0.3% (1 jump)** | **V6** |
-| **Execution Time** | ~4 min | ~3 min | **~2 min** | ~4 min | V4 |
-| **File Size** | 62MB | 64MB | **54MB** | 63MB | V4 |
-| **Visual Quality** | Good | Excellent | Excellent | **Near-Perfect** | **V6** |
-| **Complexity** | Low | Medium | Low | High | - |
-
-**Recommendation:** Use **V6 Hybrid** for best quality results. Use **V4 YOLOv8n** if speed is critical.
+**For detailed comparison of all approaches explored, see [ApproachesTried.md](ApproachesTried.md).**
 
 ---
 

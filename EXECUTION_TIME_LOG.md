@@ -270,6 +270,57 @@ Finalization:                      <1s
 
 ## Logging
 
+### V6 Execution Logger
+
+**Location:** `src/v6_hybrid_yolov8x/logger.py`
+
+The V6 pipeline includes an execution logger that automatically tracks timing and performance metrics for each stage.
+
+**Key Features:**
+- Stage-by-stage timing
+- Performance metrics (detection rate, step distance, jumps)
+- Console output with progress indicators
+- Saves log to `execution_log_v6.txt`
+
+**Usage:**
+```python
+from logger import V6ExecutionLogger
+
+logger = V6ExecutionLogger()
+logger.start_pipeline()
+logger.start_stage("Stage 1", "Description")
+# ... run stage ...
+logger.end_stage("Stage 1", "Completed", metrics={'key': 'value'})
+logger.end_pipeline(success=True)
+logger.save()
+```
+
+**Example Console Output:**
+```
+================================================================================
+V6 HYBRID PIPELINE - EXECUTION LOG
+================================================================================
+Started: 2024-10-29 15:06:40
+Approach: CNN (ResNet50) + YOLOv8x Spatial Optimization
+================================================================================
+
+[2024-10-29 15:06:40] 🚀 Starting: Stage 1: CNN Semantic Ordering
+[2024-10-29 15:08:40] ✅ Completed: Stage 1 | Time: 2m 0.0s
+
+STAGE BREAKDOWN:
+  • Stage 1: CNN Semantic Ordering: 2m 0.0s
+  • Stage 2: YOLOv8x Detection: 1m 30.0s
+  • Stage 3: Spatial Re-ordering: 5.0s
+  • Stage 4: Video Reconstruction: 10.0s
+
+FINAL METRICS:
+  • Total Frames: 300
+  • Detection Rate: 100.0% (300/300)
+  • Avg Step Distance: 3.50 pixels
+  • Jump Count: 1
+  • Jump Rate: 0.33%
+```
+
 ### Documentation vs Runtime Logs
 
 **This file (EXECUTION_TIME_LOG.md):**
@@ -284,8 +335,6 @@ Finalization:                      <1s
 - Contains actual timing from your run
 - Includes performance metrics
 - Machine and human readable
-
-See [UTILITIES.md](UTILITIES.md) for logger documentation.
 
 ---
 

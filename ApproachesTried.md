@@ -9,7 +9,7 @@ This document provides a brief overview of **all approaches explored** during th
 For detailed technical information, see:
 - **[README.md](README.md)** - Complete V6 Hybrid documentation
 - **[SETUP_AND_TESTING.md](SETUP_AND_TESTING.md)** - V6 setup and testing guide
-- **[UTILITIES.md](UTILITIES.md)** - File organization and utilities
+- **[EXECUTION_TIME_LOG.md](EXECUTION_TIME_LOG.md)** - Performance benchmarks and logging
 
 ---
 
@@ -140,7 +140,7 @@ For detailed technical information, see:
 - Pipeline: See [README.md](README.md) - "How V6 Works" section
 - Setup: See [SETUP_AND_TESTING.md](SETUP_AND_TESTING.md)
 - Metrics: See [README.md](README.md) - "Performance Analysis" section
-- Logger: See [UTILITIES.md](UTILITIES.md) - "V6 Logger" section
+- Execution Logging: See [EXECUTION_TIME_LOG.md](EXECUTION_TIME_LOG.md)
 
 ---
 
@@ -253,8 +253,7 @@ python run_pipeline.py
 ### For V6 (Main Approach):
 - **Complete Guide:** [README.md](README.md)
 - **Setup Instructions:** [SETUP_AND_TESTING.md](SETUP_AND_TESTING.md)
-- **Utilities & Logger:** [UTILITIES.md](UTILITIES.md)
-- **Performance Benchmarks:** [EXECUTION_TIME_LOG.md](EXECUTION_TIME_LOG.md)
+- **Performance Benchmarks & Logging:** [EXECUTION_TIME_LOG.md](EXECUTION_TIME_LOG.md)
 
 ### For Historical Approaches:
 - **V1 Details:** `Algorithm_Description.md`

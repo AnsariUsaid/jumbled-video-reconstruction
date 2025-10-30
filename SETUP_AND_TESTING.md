@@ -194,7 +194,7 @@ JumbledFramesProject/
 ├── README.md                    # Main project documentation
 ├── SETUP_AND_TESTING.md         # This file
 ├── EXECUTION_TIME_LOG.md        # Performance benchmarks
-└── APPROACHES_SUMMARY.md        # Algorithm comparisons
+└── ApproachesTried.md           # Algorithm comparisons
 ```
 
 ---
@@ -332,7 +332,7 @@ If you encounter issues:
 2. **Verify Installation**: Make sure virtual environment is activated and all dependencies installed
 3. **Review Documentation**: 
    - README.md for project overview
-   - APPROACHES_SUMMARY.md for algorithm details
+   - ApproachesTried.md for algorithm details
    - EXECUTION_TIME_LOG.md for performance benchmarks
 4. **Use V6 Only**: Avoid V1, V2, V4 as they are not accurate
 

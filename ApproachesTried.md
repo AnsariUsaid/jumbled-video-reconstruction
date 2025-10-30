@@ -13,6 +13,15 @@ For detailed technical information, see:
 
 ---
 
+## 🎬 Demo Videos
+
+| Jumbled Video | V1 Reconstructed | V2 Reconstructed | V4 Reconstructed | V6 Reconstructed ⭐ |
+|---------------|------------------|------------------|------------------|---------------------|
+| Random order | ORB (89% similarity) | CNN (99.6% similarity) | YOLO (5.7px avg step) | Hybrid (3.5px avg step) |
+| 🎥 [**Watch**](https://drive.google.com/file/d/1Rzi3UD2sxJbSYcNVARlPqvLbA7PBAKIH/view?usp=sharing) | 🎥 [**Watch V1**](https://drive.google.com/file/d/1s1Cir_J_sommAQWMEaIXUlTXQYM29-Fj/view?usp=sharing) | 🎥 [**Watch V2**](https://drive.google.com/file/d/1neINE83qJeY4Sc_N3AW9jvE_SI8vtXZi/view?usp=sharing) | 🎥 [**Watch V4**](https://drive.google.com/file/d/1ALhd1qUhMGspCIEmxpIiORcFw-T5unA7/view?usp=sharing) | 🎥 [**Watch V6**](https://drive.google.com/file/d/1w6DSB9zpo0XKdO7z8J8FyX1wa7SJ9h9E/view?usp=sharing) |
+
+---
+
 ## Approaches Explored (V1 - V7)
 
 ### V1: ORB Features + Graph Ordering (Explored)
@@ -250,10 +259,6 @@ python run_pipeline.py
 - **Complete Guide:** [README.md](README.md)
 - **Setup Instructions:** [SETUP_AND_TESTING.md](SETUP_AND_TESTING.md)
 - **Performance Benchmarks & Logging:** [EXECUTION_TIME_LOG.md](EXECUTION_TIME_LOG.md)
-
-### For Historical Approaches:
-- **V4 Details:** `src/v4_yolo_tracking/README.md`
-- **Execution Times:** [EXECUTION_TIME_LOG.md](EXECUTION_TIME_LOG.md)
 
 ---
 

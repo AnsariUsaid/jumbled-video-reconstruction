@@ -15,7 +15,6 @@ A Python project to reconstruct jumbled video frames using a hybrid approach com
 - **[SETUP_AND_TESTING.md](SETUP_AND_TESTING.md)** - Installation and execution instructions
 - **[ApproachesTried.md](ApproachesTried.md)** - All approaches explored (V1-V7) and why V6 is best
 - **[EXECUTION_TIME_LOG.md](EXECUTION_TIME_LOG.md)** - Performance benchmarks and execution logging
-- **[CHECKLIST.md](CHECKLIST.md)** - Project development checklist
 
 **First time here?** Continue reading below for complete V6 documentation. For setup instructions, see [SETUP_AND_TESTING.md](SETUP_AND_TESTING.md).
 
@@ -446,16 +445,6 @@ distance = sqrt((x2 - x1)² + (y2 - y1)²)
 | Path Efficiency | 99.7% | Minimal backtracking |
 | Start Frame | 64 | Bottom-right corner |
 | End Frame | Varies | Natural sequence end |
-
----
-
-## 📖 Additional Documentation
-
-### Full Project Documentation
-- **[ApproachesTried.md](ApproachesTried.md)** - Comparison of all approaches (V1-V7)
-- **[SETUP_AND_TESTING.md](SETUP_AND_TESTING.md)** - Detailed setup and testing guide
-- **[EXECUTION_TIME_LOG.md](EXECUTION_TIME_LOG.md)** - Performance benchmarks and execution logging
-- **[CHECKLIST.md](CHECKLIST.md)** - Project development checklist
 
 ---
 

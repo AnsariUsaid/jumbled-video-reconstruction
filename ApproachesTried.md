@@ -31,8 +31,6 @@ For detailed technical information, see:
 
 **Why Not Used:** Low similarity score, doesn't capture scene semantics, not suitable for production.
 
-**Reference:** `Algorithm_Description.md` for details
-
 ---
 
 ### V2: CNN (ResNet50) Features (Explored)
@@ -50,8 +48,6 @@ For detailed technical information, see:
 - Issues: No person tracking, doesn't optimize for motion continuity
 
 **Why Not Used:** While high similarity, it lacks spatial awareness and person-specific tracking needed for smooth reconstruction.
-
-**Reference:** `V2_Algorithm_Description.md` for details
 
 ---
 
@@ -256,8 +252,6 @@ python run_pipeline.py
 - **Performance Benchmarks & Logging:** [EXECUTION_TIME_LOG.md](EXECUTION_TIME_LOG.md)
 
 ### For Historical Approaches:
-- **V1 Details:** `Algorithm_Description.md`
-- **V2 Details:** `V2_Algorithm_Description.md`
 - **V4 Details:** `src/v4_yolo_tracking/README.md`
 - **Execution Times:** [EXECUTION_TIME_LOG.md](EXECUTION_TIME_LOG.md)
 

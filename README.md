@@ -447,21 +447,6 @@ distance = sqrt((x2 - x1)² + (y2 - y1)²)
 | Start Frame | 64 | Bottom-right corner |
 | End Frame | Varies | Natural sequence end |
 
-### Comparison with Other Approaches
-
-| Approach | Detection | Avg Step | Jumps | Quality |
-|----------|-----------|----------|-------|---------|
-| V1 (ORB) | N/A | N/A | N/A | Good (89% similarity) |
-| V2 (CNN) | N/A | N/A | N/A | Excellent (99.6% similarity) |
-| V4 (YOLOv8n) | 99% (297/300) | 5.7px | 5 (1.7%) | Excellent |
-| **V6 (Hybrid)** ⭐ | **100% (300/300)** | **3.5px** | **1 (0.3%)** | **Near-Perfect** |
-
-**V6 Improvements over V4:**
-- ✅ **Detection**: +1% (3 more frames detected)
-- ✅ **Smoothness**: -38% step distance (3.5px vs 5.7px)
-- ✅ **Stability**: -80% fewer jumps (1 vs 5)
-- ✅ **Quality**: Visibly smoother motion
-
 ---
 
 ## 📖 Additional Documentation

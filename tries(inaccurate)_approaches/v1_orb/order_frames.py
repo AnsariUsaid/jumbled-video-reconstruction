@@ -194,9 +194,9 @@ def print_order_statistics(order, frames_data, similarity_matrix):
 
 def main():
     project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-    matrix_file = os.path.join(project_root, "similarity_matrix_cnn.npy")
-    features_file = os.path.join(project_root, "frames_features_cnn.pkl")
-    output_file = os.path.join(project_root, "frame_order_cnn.pkl")
+    matrix_file = os.path.join(project_root, "similarity_matrix.npy")
+    features_file = os.path.join(project_root, "frames_features.pkl")
+    output_file = os.path.join(project_root, "frame_order.pkl")
     
     print("=" * 60)
     print("STEP 5: DETERMINE OPTIMAL FRAME ORDER")

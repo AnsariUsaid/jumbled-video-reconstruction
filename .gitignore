@@ -42,7 +42,8 @@ src/**/yolov8*.pt
 # Logs
 *.log
 *.txt
-!execution_log_v6.txt
+!execution_log_v8.txt
+!requirements.txt
 flow_output.txt
 
 # Jupyter Notebook

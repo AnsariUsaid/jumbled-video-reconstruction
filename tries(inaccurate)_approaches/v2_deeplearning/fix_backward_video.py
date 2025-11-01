@@ -5,7 +5,7 @@ import sys
 
 def reverse_frame_order():
     """Simply reverse the frame order to fix backward video."""
-    project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+    project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
     order_file = os.path.join(project_root, "frame_order_cnn.pkl")
     
     print("=" * 60)

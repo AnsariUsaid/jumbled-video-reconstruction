@@ -55,7 +55,7 @@ def extract_frames(video_path, output_dir):
 def main():
     """Main function to run frame extraction."""
     # Define paths
-    project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
     video_path = os.path.join(project_root, "jumbled_video.mp4")
     output_dir = os.path.join(project_root, "frames")
     

@@ -17,7 +17,7 @@ def main():
     overall_start = time.time()
     
     # Get project root
-    project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
     
     # Phase 1: Setup Verification
     print("Phase 1: Project Setup Verification")

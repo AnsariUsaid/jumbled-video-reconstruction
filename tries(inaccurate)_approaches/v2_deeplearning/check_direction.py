@@ -45,7 +45,7 @@ def reverse_order(frame_order):
 
 
 def main():
-    project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
     order_file = os.path.join(project_root, "frame_order_cnn.pkl")
     frames_dir = os.path.join(project_root, "frames")
     

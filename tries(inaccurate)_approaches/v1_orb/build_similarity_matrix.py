@@ -92,7 +92,7 @@ def print_matrix_statistics(similarity_matrix, frames_data):
 
 
 def main():
-    project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
     features_file = os.path.join(project_root, "frames_features.pkl")
     output_file = os.path.join(project_root, "similarity_matrix.npy")
     

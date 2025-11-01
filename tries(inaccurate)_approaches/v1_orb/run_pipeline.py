@@ -8,7 +8,7 @@ from logger import ExecutionLogger
 
 def main():
     logger = ExecutionLogger("execution_log.txt")
-    project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
     
     logger.log("=" * 60)
     logger.log("COMPLETE PIPELINE EXECUTION")

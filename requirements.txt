@@ -1,9 +1,10 @@
 opencv-python
 numpy
+pandas
+ultralytics
+scipy
+scikit-image
 tqdm
 tensorflow
 scikit-learn
 matplotlib
-pandas
-ultralytics
-scipy

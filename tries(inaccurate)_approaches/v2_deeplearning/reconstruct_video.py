@@ -67,7 +67,7 @@ def reconstruct_video(order_data, frames_dir, output_path, fps=30):
 
 
 def main():
-    project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+    project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
     order_file = os.path.join(project_root, "frame_order_cnn.pkl")
     frames_dir = os.path.join(project_root, "frames")
     output_dir = os.path.join(project_root, "output")
